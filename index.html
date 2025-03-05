@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhonePe Payment Gateway Integration - React Native Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --phonepe-purple: #5f259f;
+            --phonepe-light: #8c52ff;
+            --code-bg: #1e1e1e;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--phonepe-purple) 0%, var(--phonepe-light) 100%);
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        h1, h2, h3 {
+            color: var(--phonepe-purple);
+            font-weight: 600;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: #e6e6e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-family: 'Consolas', monospace;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--phonepe-purple), var(--phonepe-light));
+            border-radius: 10px 10px 0 0;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--phonepe-purple) 0%, var(--phonepe-light) 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(95,37,159,0.2);
+        }
+
+        .note-block {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff5cc 100%);
+            border-left: 4px solid #ffd700;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--phonepe-purple) 0%, var(--phonepe-light) 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem 1.5rem;
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #0d47a1;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            color: #e65100;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--phonepe-purple);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: var(--phonepe-light);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--phonepe-purple);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--phonepe-light);
+        }
+
+        /* Code Copy Button */
+        .code-block {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Section Transitions */
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* API Method Tags */
+        .method-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .method-post {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .method-get {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">PhonePe Payment Gateway Integration</span>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <h1 class="mb-4">PhonePe Payment Gateway Integration Guide for React Native</h1>
+        
+        <div class="alert alert-info">
+            This guide will help you integrate PhonePe payment gateway in your React Native application.
+        </div>
+
+        <section class="mb-5">
+            <h2><span class="step-number">1</span>Installation</h2>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>npm install react-native-phonepe-pg</pre>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2><span class="step-number">2</span>Configuration</h2>
+            <p>Create a configuration file (api/server.js):</p>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+// PhonePe Configuration
+const ENV = 'UAT';  // or 'PROD' for production
+const BASE_URL = 'https://api-preprod.phonepe.com/apis/pg-sandbox';
+const CLIENT_ID = 'YOUR_CLIENT_ID';
+const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
+const CLIENT_VERSION = 1;
+const MERCHANT_ID = 'YOUR_MERCHANT_ID';
+
+// Token cache
+let tokenCache = {
+    access_token: null,
+    expires_at: 0
+};</pre>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2><span class="step-number">3</span>Auth Token Generation</h2>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+export const generateAuthToken = async () => {
+    try {
+        const formData = new URLSearchParams();
+        formData.append('client_id', CLIENT_ID);
+        formData.append('client_secret', CLIENT_SECRET);
+        formData.append('client_version', CLIENT_VERSION.toString());
+        formData.append('grant_type', 'client_credentials');
+
+        const response = await fetch(`${BASE_URL}/v1/oauth/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+            },
+            body: formData.toString()
+        });
+
+        const data = await response.json();
+        if (data.access_token) {
+            tokenCache = {
+                access_token: data.access_token,
+                expires_at: data.expires_at
+            };
+            return data.access_token;
+        }
+        throw new Error('No access token in response');
+    } catch (error) {
+        throw error;
+    }
+};</pre>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2><span class="step-number">4</span>Order Creation</h2>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+export const createOrder = async (amount) => {
+    try {
+        const token = tokenCache.access_token;
+        if (!token) {
+            throw new Error('No auth token available');
+        }
+
+        const merchantOrderId = `ORDER${Date.now()}${Math.random().toString(36).slice(2, 6)}`;
+
+        const orderPayload = {
+            merchantOrderId: merchantOrderId,
+            amount: amount,
+            expireAfter: 1200,
+            metaInfo: {
+                udf1: "React Native App",
+                udf2: merchantOrderId
+            },
+            paymentFlow: {
+                type: "PG_CHECKOUT"
+            }
+        };
+
+        const response = await fetch(`${BASE_URL}/checkout/v2/sdk/order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `O-Bearer ${token}`,
+            },
+            body: JSON.stringify(orderPayload)
+        });
+
+        const data = await response.json();
+        return {
+            orderId: data.orderId,
+            token: data.token,
+            merchantOrderId: merchantOrderId,
+            state: data.state
+        };
+    } catch (error) {
+        throw error;
+    }
+};</pre>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2><span class="step-number">5</span>Payment Component Implementation</h2>
+            <p>Create a new component (screens/main/PhonePePayment.jsx):</p>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import PhonePePaymentSDK from 'react-native-phonepe-pg';
+import { generateAuthToken, createOrder } from '../../api/server';
+
+const PhonePePayment = () => {
+    const [isSDKInitialized, setIsSDKInitialized] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Initialize SDK and generate token
+    useEffect(() => {
+        initializeSDKAndToken();
+    }, []);
+
+    // Payment handling logic
+    const startPayment = async () => {
+        // ... payment implementation
+    };
+
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity 
+                style={styles.payButton}
+                onPress={startPayment}
+                disabled={!isSDKInitialized || isLoading}
+            >
+                <Text style={styles.buttonText}>
+                    {isLoading ? 'Processing...' : 'Pay with PhonePe'}
+                </Text>
+            </TouchableOpacity>
+        </View>
+    );
+};</pre>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2><span class="step-number">6</span>Payment Flow Implementation</h2>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+const startPayment = async () => {
+    if (!isSDKInitialized) {
+        Alert.alert("Error", "Payment system not initialized");
+        return;
+    }
+
+    setIsLoading(true);
+    try {
+        const orderData = await createOrder(100); // Amount in paise
+        
+        const requestBody = {
+            orderId: orderData.orderId,
+            merchantId: "YOUR_MERCHANT_ID",
+            merchantOrderId: orderData.merchantOrderId,
+            token: orderData.token,
+            amount: 100,
+            paymentMode: {
+                type: "PAY_PAGE"
+            },
+            redirectUrl: "YOUR_REDIRECT_URL",
+            callbackUrl: "YOUR_CALLBACK_URL",
+            deviceContext: {
+                deviceOS: "ANDROID"
+            }
+        };
+
+        const response = await PhonePePaymentSDK.startTransaction(
+            JSON.stringify(requestBody),
+            null
+        );
+        
+        handlePaymentStatus(response);
+    } catch (error) {
+        Alert.alert("Error", "Payment failed. Please try again.");
+    } finally {
+        setIsLoading(false);
+    }
+};</pre>
+            </div>
+        </section>
+
+        <div class="note-block">
+            <h4>Important Notes:</h4>
+            <ul>
+                <li>Replace placeholder values with your actual PhonePe credentials</li>
+                <li>Implement proper error handling</li>
+                <li>Use secure storage for tokens in production</li>
+                <li>Test thoroughly in sandbox environment before going live</li>
+            </ul>
+        </div>
+
+        <section class="mb-5">
+            <h2>Testing</h2>
+            <p>For UAT testing, use these credentials:</p>
+            <ul>
+                <li>UPI: success@ybl</li>
+                <li>Card: 4242 4242 4242 4242</li>
+                <li>Expiry: Any future date</li>
+                <li>CVV: Any 3 digits</li>
+            </ul>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="mb-4">API Reference</h2>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="h5 mb-0">1. Generate Auth Token</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <span class="method-tag method-post">POST</span>
+                        <strong>Endpoint:</strong> <code>/v1/oauth/token</code>
+                    </p>
+                    <p><strong>Base URL:</strong> <code>https://api-preprod.phonepe.com/apis/pg-sandbox</code> (UAT)</p>
+                    
+                    <h6>Request Headers:</h6>
+                    <pre class="code-block">
+{
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
+}</pre>
+
+                    <h6>Request Body:</h6>
+                    <pre class="code-block">
+{
+    client_id: 'YOUR_CLIENT_ID',
+    client_secret: 'YOUR_CLIENT_SECRET',
+    client_version: '1',
+    grant_type: 'client_credentials'
+}</pre>
+
+                    <h6>Success Response:</h6>
+                    <pre class="code-block">
+{
+    "access_token": "eyJhbGciOiJIUzI1...",
+    "token_type": "Bearer",
+    "expires_in": 3600,
+    "expires_at": 1679831543000
+}</pre>
+
+                    <h6>Error Response:</h6>
+                    <pre class="code-block">
+{
+    "error": "invalid_client",
+    "error_description": "Invalid client credentials"
+}</pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="h5 mb-0">2. Create Order</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <span class="method-tag method-post">POST</span>
+                        <strong>Endpoint:</strong> <code>/checkout/v2/sdk/order</code>
+                    </p>
+                    
+                    <h6>Request Headers:</h6>
+                    <pre class="code-block">
+{
+    'Content-Type': 'application/json',
+    'Authorization': 'O-Bearer YOUR_ACCESS_TOKEN'
+}</pre>
+
+                    <h6>Request Body:</h6>
+                    <pre class="code-block">
+{
+    "merchantOrderId": "ORDER123456789",
+    "amount": 100,                    // Amount in paise
+    "expireAfter": 1200,             // Time in seconds
+    "metaInfo": {
+        "udf1": "React Native App",
+        "udf2": "ORDER123456789"
+    },
+    "paymentFlow": {
+        "type": "PG_CHECKOUT"
+    }
+}</pre>
+
+                    <h6>Success Response:</h6>
+                    <pre class="code-block">
+{
+    "success": true,
+    "code": "SUCCESS",
+    "message": "Order created successfully",
+    "data": {
+        "orderId": "PGTXN123456789",
+        "token": "TOKEN123456789",
+        "merchantOrderId": "ORDER123456789",
+        "state": "CREATED"
+    }
+}</pre>
+
+                    <h6>Error Response:</h6>
+                    <pre class="code-block">
+{
+    "success": false,
+    "code": "ERROR_CODE",
+    "message": "Error description"
+}</pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="h5 mb-0">3. Start Transaction</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Method:</strong> SDK Method Call</p>
+                    
+                    <h6>Request Body:</h6>
+                    <pre class="code-block">
+{
+    "orderId": "PGTXN123456789",
+    "merchantId": "YOUR_MERCHANT_ID",
+    "merchantOrderId": "ORDER123456789",
+    "token": "TOKEN123456789",
+    "amount": 100,
+    "paymentMode": {
+        "type": "PAY_PAGE"
+    },
+    "redirectUrl": "YOUR_REDIRECT_URL",
+    "callbackUrl": "YOUR_CALLBACK_URL",
+    "deviceContext": {
+        "deviceOS": "ANDROID"  // or "IOS"
+    }
+}</pre>
+
+                    <h6>Success Response:</h6>
+                    <pre class="code-block">
+{
+    "status": "SUCCESS",
+    "code": "PAYMENT_SUCCESS",
+    "merchantId": "YOUR_MERCHANT_ID",
+    "merchantOrderId": "ORDER123456789",
+    "transactionId": "PGTXN123456789",
+    "amount": 100,
+    "providerReferenceId": "UPI123456789"
+}</pre>
+
+                    <h6>Error/Failure Response:</h6>
+                    <pre class="code-block">
+{
+    "status": "FAILURE",
+    "code": "PAYMENT_ERROR",
+    "message": "Payment failed",
+    "merchantId": "YOUR_MERCHANT_ID",
+    "merchantOrderId": "ORDER123456789"
+}</pre>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="h5 mb-0">4. Check Transaction Status</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Endpoint:</strong> <code>/pg/v1/status/{merchantId}/{merchantOrderId}</code></p>
+                    <p><strong>Method:</strong> GET</p>
+                    
+                    <h6>Request Headers:</h6>
+                    <pre class="code-block">
+{
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+}</pre>
+
+                    <h6>Success Response:</h6>
+                    <pre class="code-block">
+{
+    "success": true,
+    "code": "PAYMENT_SUCCESS",
+    "message": "Transaction successful",
+    "data": {
+        "merchantId": "YOUR_MERCHANT_ID",
+        "merchantOrderId": "ORDER123456789",
+        "transactionId": "PGTXN123456789",
+        "amount": 100,
+        "state": "COMPLETED",
+        "responseCode": "SUCCESS",
+        "paymentInstrument": {
+            "type": "UPI",
+            "utr": "123456789"
+        }
+    }
+}</pre>
+
+                    <h6>Error Response:</h6>
+                    <pre class="code-block">
+{
+    "success": false,
+    "code": "PAYMENT_PENDING",
+    "message": "Transaction is pending",
+    "data": {
+        "merchantId": "YOUR_MERCHANT_ID",
+        "merchantOrderId": "ORDER123456789",
+        "state": "PENDING"
+    }
+}</pre>
+                </div>
+            </div>
+
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Important Notes:
+                </h4>
+                <ul class="mb-0">
+                    <li>All amounts are in paise (1 INR = 100 paise)</li>
+                    <li>Auth tokens typically expire after 1 hour</li>
+                    <li>Order expiry can be set between 5 minutes to 24 hours</li>
+                    <li>Always implement proper error handling for all API calls</li>
+                    <li>Store sensitive credentials securely</li>
+                    <li>Implement webhook handling for payment status updates</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-light py-3 mt-5">
+        <div class="container text-center">
+            <p>For more information, visit <a href="https://developer.phonepe.com/docs">PhonePe Developer Documentation</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const code = btn.nextElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                
+                // Show feedback
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                }, 2000);
+            });
+        });
+
+        // Animate sections on scroll
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
