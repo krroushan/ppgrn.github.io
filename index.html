@@ -216,6 +216,14 @@
         <h1 class="mb-4">PhonePe Payment Gateway Integration Guide for React Native</h1>
         
         <div class="alert alert-info">
+            <h5><i class="fas fa-info-circle me-2"></i>Version Requirements:</h5>
+            <ul class="mb-0">
+                <li>React Native Version: ≥ 0.72.3</li>
+                <li>React Native SDK Version: 3.0.0</li>
+            </ul>
+        </div>
+
+        <div class="alert alert-info">
             This guide will help you integrate PhonePe payment gateway in your React Native application.
         </div>
 
@@ -225,12 +233,86 @@
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
                 </button>
-                <pre>npm install react-native-phonepe-pg</pre>
+                <pre>npm i react-native-phonepe-pg -f
+npm i -f</pre>
             </div>
         </section>
 
         <section class="mb-5">
-            <h2><span class="step-number">2</span>Configuration</h2>
+            <h2><span class="step-number">2</span>Platform Configuration</h2>
+            
+            <h3 class="mt-4">Android Setup</h3>
+            <p>Add the following to your project level build.gradle:</p>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+allprojects { 
+    repositories { 
+        google() 
+        maven { 
+            url "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-android" 
+        } 
+    } 
+}</pre>
+            </div>
+
+            <h3 class="mt-4">iOS Setup</h3>
+            <p>1. Add URL schemes to Info.plist:</p>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+&lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt; 
+&lt;array&gt; 
+    &lt;string&gt;ppemerchantsdkv1&lt;/string&gt;  
+    &lt;string&gt;ppemerchantsdkv2&lt;/string&gt; 
+    &lt;string&gt;ppemerchantsdkv3&lt;/string&gt;
+    &lt;string&gt;paytmmp&lt;/string&gt;
+    &lt;string&gt;gpay&lt;/string&gt;
+&lt;/array&gt;</pre>
+            </div>
+
+            <p>2. Add URL Type for deep linking in Xcode</p>
+            <div class="alert alert-warning">
+                <strong>URL Scheme Requirements:</strong>
+                <ul>
+                    <li>Only alphanumeric characters allowed</li>
+                    <li>Special characters limited to dots and hyphens</li>
+                    <li>Must start with alphabets</li>
+                </ul>
+            </div>
+
+            <p>3. Install iOS dependencies:</p>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>cd ios 
+pod install</pre>
+            </div>
+
+            <p>4. Add deep linking handler to AppDelegate.m:</p>
+            <div class="code-block">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre>
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options 
+{ 
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init]; 
+    [userInfo setObject:options forKey:@"options"];    
+    [userInfo setObject:url forKey:@"openUrl"]; 
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"ApplicationOpenURLNotification" object:nil userInfo:userInfo]; 
+    return YES; 
+}</pre>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2><span class="step-number">3</span>Configuration</h2>
             <p>Create a configuration file (api/server.js):</p>
             <div class="code-block">
                 <button class="copy-btn">
@@ -254,7 +336,7 @@ let tokenCache = {
         </section>
 
         <section class="mb-5">
-            <h2><span class="step-number">3</span>Auth Token Generation</h2>
+            <h2><span class="step-number">4</span>Auth Token Generation</h2>
             <div class="code-block">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
@@ -294,7 +376,7 @@ export const generateAuthToken = async () => {
         </section>
 
         <section class="mb-5">
-            <h2><span class="step-number">4</span>Order Creation</h2>
+            <h2><span class="step-number">5</span>Order Creation</h2>
             <div class="code-block">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
@@ -346,7 +428,7 @@ export const createOrder = async (amount) => {
         </section>
 
         <section class="mb-5">
-            <h2><span class="step-number">5</span>Payment Component Implementation</h2>
+            <h2><span class="step-number">6</span>Payment Component Implementation</h2>
             <p>Create a new component (screens/main/PhonePePayment.jsx):</p>
             <div class="code-block">
                 <button class="copy-btn">
@@ -390,7 +472,7 @@ const PhonePePayment = () => {
         </section>
 
         <section class="mb-5">
-            <h2><span class="step-number">6</span>Payment Flow Implementation</h2>
+            <h2><span class="step-number">7</span>Payment Flow Implementation</h2>
             <div class="code-block">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
