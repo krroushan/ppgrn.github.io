@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth API Documentation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ... existing styles ... */
+        
+        pre {
+            background-color: #1a1a1a !important;
+            color: #e5e7eb !important;
+            padding: 1rem !important;
+            border-radius: 6px !important;
+            margin: 0 !important;
+        }
+
+        .code-block {
+            background: transparent !important;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #e5e7eb;
+        }
+
+        .response-success pre {
+            background-color: #0d2d25 !important;
+            color: #d1fae5 !important;
+        }
+
+        .response-error pre {
+            background-color: #2d1a1a !important;
+            color: #fecaca !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="mb-3">API Documentation</h5>
+                    <div class="nav flex-column">
+                        <a class="nav-link active" href="#introduction">Introduction</a>
+
+                        <div class="nav-heading">Public Endpoints</div>
+                        <a class="nav-link" href="#login">Login</a>
+                        <a class="nav-link" href="#register">Register</a>
+                        <a class="nav-link" href="#logout">Logout</a>
+                        <a class="nav-link" href="#forgot-password">Forgot Password</a>
+
+                        <div class="nav-heading">Admin Endpoints</div>
+                        <!-- Admin Endpoints -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Introduction -->
+                <div class="intro-section" id="introduction">
+                    <h1>Auth API Documentation</h1>
+                    <p class="lead">Welcome to the Auth API documentation. This API provides endpoints for managing
+                        authentication in your e-commerce application.</p>
+
+                    <h4 class="mt-4">Base URL</h4>
+                    <div class="code-block">
+                        <code>http://localhost:3000/api/auth</code>
+                    </div>
+
+                    <h4 class="mt-4">Authentication</h4>
+                    <p>Some endpoints require authentication. Admin endpoints require admin privileges.</p>
+                    <div class="code-block">
+                        <code>Authorization: Bearer &lt;your_token&gt;</code>
+                    </div>
+
+                    <h4 class="mt-4">Response Format</h4>
+                    <p>All responses follow a standard format:</p>
+                    <div class="code-block">
+                        <pre>{
+  "success": true,
+  "data": { ... } // Response data
+}
+
+// Error response
+{
+  "success": false,
+  "error": "Error message"
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Public Endpoints -->
+                <div class="api-section" id="login">
+                    <h2>Public Endpoints</h2>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#login-body">
+                            <div class="method method-post">POST</div>
+                            <div class="endpoint-path">/api/auth/login</div>
+                            <div class="endpoint-description">Login</div>
+                        </div>
+                        <div class="endpoint-body" id="login-body">
+                            <p>Returns a token for the user.</p>
+
+                            <h5 class="mt-4">Body Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td class="param-name">Email</td>
+                                            <td class="param-type">string</td>
+                                            <td>User email</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">Password</td>
+                                            <td class="param-type">string</td>
+                                            <td>User password</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#login-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="login-url">POST /api/auth/login</pre>
+                            </div>
+
+                            <h5 class="mt-4">Example Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                </div>
+                                <pre id="login-body">{
+                                    "email": "john@example.com",
+                                    "password": "password123"
+                                  }</pre>
+                            </div>
+
+
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#login-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="login-response">
+    {
+        "success": true,
+        "data": {
+            "user": {
+                "id": "67c449a5ff593c26f1a9ca54",
+                "name": "John Doe",
+                "email": "john@example.com",
+                "role": "customer"
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzQ0OWE1ZmY1OTNjMjZmMWE5Y2E1NCIsImVtYWlsIjoiam9obkBleGFtcGxlLmNvbSIsIm5hbWUiOiJKb2huIERvZSIsInJvbGUiOiJjdXN0b21lciIsIm1vZGVsIjoiVXNlciIsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE3NDExOTk3NTIsImV4cCI6MTc0MTI4NjE1Mn0.1d4Xi_VbIO41vZ1aBB6TBIwWSnckV6IpBJ-EEGi5Ltg"
+        }
+    }
+</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="register">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#register-body">
+                            <div class="method method-post">POST</div>
+                            <div class="endpoint-path">/api/auth/register</div>
+                            <div class="endpoint-description">Register a new user</div>
+                        </div>
+                        <div class="endpoint-body" id="register-body">
+                            <p>Returns a token for the user.</p>
+
+                            <h5 class="mt-4">Body Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">Full Name</td>
+                                            <td class="param-type">string</td>
+                                            <td>User full name</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">Email</td>
+                                            <td class="param-type">string</td>
+                                            <td>User email</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="param-name">Phone Number</td>
+                                            <td class="param-type">string</td>
+                                            <td>User phone number</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="param-name">Password</td>
+                                            <td class="param-type">string</td>
+                                            <td>User password</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="mt-4">Example Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#register-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="register-body">{
+    "name": "John Doe2",
+    "email": "john21@example.com",
+    "password": "password123",
+    "phone": "1234567890"
+  }</pre>
+                            </div>
+
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#register-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="register-response">
+    {
+        "success": true,
+        "data": {
+            "user": {
+                "id": "67c89d8c17fc0428a7a5bd70",
+                "name": "John Doe2",
+                "email": "john21@example.com",
+                "phone": "1234567890",
+                "role": "customer"
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yzg5ZDhjMTdmYzA0MjhhN2E1YmQ3MCIsImVtYWlsIjoiam9objIxQGV4YW1wbGUuY29tIiwibmFtZSI6IkpvaG4gRG9lMiIsInJvbGUiOiJjdXN0b21lciIsIm1vZGVsIjoiVXNlciIsInBlcm1pc3Npb25zIjpudWxsLCJpYXQiOjE3NDEyMDA3ODEsImV4cCI6MTc0MTI4NzE4MX0.fipG9DP3dGz6RMx2pNFhk7F6AILSlTz29lYWW0qOfCM"
+        }
+    }
+</pre>
+                            </div>
+
+                            <div class="code-block response-error">
+                                <div class="code-header">
+                                    <span class="code-title">404 Not Found</span>
+                                    <button class="copy-btn" data-clipboard-target="#register-error">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="register-error">{
+  "success": false,
+  "error": "User already exists"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+                <!-- Admin Endpoints -->
+                <!-- <div class="api-section" id="admin-products-list">
+                    <h2>Admin Endpoints</h2>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-header" data-bs-toggle="collapse"
+                            data-bs-target="#admin-products-list-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/admin/products</div>
+                            <div class="endpoint-description">List all products (admin)</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="admin-products-list-body">
+                            <p>Returns a paginated list of products.</p>
+
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-products-list-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="admin-products-list-url">GET /api/admin/products?limit=8</pre>
+                            </div>
+
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-products-list-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="admin-products-list-response">{
+  "success": true,
+  "data": {
+    "products": [
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Organic Apples",
+        "slug": "organic-apples",
+        "price": 2.99,
+        "salePrice": 2.49,
+        "discountPercentage": 17,
+        "images": ["apple1.jpg", "apple2.jpg"],
+        "stock": 100,
+        "stockStatus": "in stock",
+        "baseQuantity": "1",
+        "quantityUnit": "kg",
+        "onSale": true,
+        "primaryCategory": {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      },
+      // More products...
+    ],
+    "pagination": {
+      "total": 50,
+      "page": 1,
+      "limit": 8,
+      "pages": 7
+    }
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="admin-product-detail">
+                        <div class="endpoint-header" data-bs-toggle="collapse"
+                            data-bs-target="#admin-product-detail-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}</div>
+                            <div class="endpoint-description">Get product details (admin)</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="admin-product-detail-body">
+                            <p>Returns detailed information about a specific product.</p>
+
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-product-detail-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="admin-product-detail-url">GET /api/admin/products/organic-apples</pre>
+                            </div>
+
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-product-detail-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="admin-product-detail-response">{
+  "success": true,
+  "data": {
+    "product": {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "stock": 100,
+      "stockUnit": "kg",
+      "stockStatus": "in stock",
+      "categories": [
+        {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      ],
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      },
+      "description": "Fresh organic apples from local farms.",
+      "shortDescription": "Fresh organic apples",
+      "onSale": true,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "additionalInfo": {
+        "origin": "Local Farms",
+        "organic": "Yes",
+        "storage": "Keep refrigerated"
+      },
+      "seasonal": true,
+      "featured": true,
+      "publishStatus": "published",
+      "publishDate": "2023-01-15T00:00:00.000Z",
+      "createdAt": "2023-01-10T00:00:00.000Z",
+      "updatedAt": "2023-01-15T00:00:00.000Z"
+    },
+    "relatedProducts": [
+      // Related products...
+    ]
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="create-product">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#create-product-body">
+                            <div class="method method-post">POST</div>
+                            <div class="endpoint-path">/api/admin/products</div>
+                            <div class="endpoint-description">Create a new product</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="create-product-body">
+                            <p>Creates a new product.</p>
+
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#create-product-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="create-product-body">{
+  "name": "Organic Apples",
+  "slug": "organic-apples",
+  "price": 2.99,
+  "salePrice": 2.49,
+  "discountPercentage": 17,
+  "stock": 100,
+  "stockStatus": "in stock",
+  "baseQuantity": "1",
+  "quantityUnit": "kg",
+  "onSale": true,
+  "primaryCategory": {
+    "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+    "name": "Fruits",
+    "slug": "fruits"
+  },
+  "images": ["apple1.jpg", "apple2.jpg"],
+  "description": "Fresh organic apples from local farms.",
+  "shortDescription": "Fresh organic apples",
+  "additionalInfo": {
+    "origin": "Local Farms",
+    "organic": "Yes",
+    "storage": "Keep refrigerated"
+  },
+  "seasonal": true,
+  "featured": true,
+  "publishStatus": "published",
+  "publishDate": "2023-01-15T00:00:00.000Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="update-product">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#update-product-body">
+                            <div class="method method-put">PUT</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}</div>
+                            <div class="endpoint-description">Update product details</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="update-product-body">
+                            <p>Updates the details of an existing product.</p>
+
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#update-product-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="update-product-body">{
+  "name": "Organic Apples",
+  "slug": "organic-apples",
+  "price": 2.99,
+  "salePrice": 2.49,
+  "discountPercentage": 17,
+  "stock": 100,
+  "stockStatus": "in stock",
+  "baseQuantity": "1",
+  "quantityUnit": "kg",
+  "onSale": true,
+  "primaryCategory": {
+    "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+    "name": "Fruits",
+    "slug": "fruits"
+  },
+  "images": ["apple1.jpg", "apple2.jpg"],
+  "description": "Fresh organic apples from local farms.",
+  "shortDescription": "Fresh organic apples",
+  "additionalInfo": {
+    "origin": "Local Farms",
+    "organic": "Yes",
+    "storage": "Keep refrigerated"
+  },
+  "seasonal": true,
+  "featured": true,
+  "publishStatus": "published",
+  "publishDate": "2023-01-15T00:00:00.000Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="delete-product">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#delete-product-body">
+                            <div class="method method-delete">DELETE</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}</div>
+                            <div class="endpoint-description">Delete a product</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="delete-product-body">
+                            <p>Deletes an existing product.</p>
+
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="bulk-operations">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#bulk-operations-body">
+                            <div class="method method-post">POST</div>
+                            <div class="endpoint-path">/api/admin/products/bulk</div>
+                            <div class="endpoint-description">Perform bulk operations on products</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="bulk-operations-body">
+                            <p>Performs bulk operations on multiple products.</p>
+
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#bulk-operations-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="bulk-operations-body">{
+  "operations": [
+    {
+      "operation": "update",
+      "productId": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "updates": {
+        "price": 3.99
+      }
+    },
+    {
+      "operation": "delete",
+      "productId": "64a1b2c3d4e5f6a7b8c9d0e2"
+    }
+  ]
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="product-stats">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#product-stats-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/admin/products/stats</div>
+                            <div class="endpoint-description">Get product statistics</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="product-stats-body">
+                            <p>Returns statistics about products.</p>
+
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">startDate</td>
+                                            <td class="param-type">string</td>
+                                            <td>Start date for the statistics (format: YYYY-MM-DD)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">endDate</td>
+                                            <td class="param-type">string</td>
+                                            <td>End date for the statistics (format: YYYY-MM-DD)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card" id="update-stock">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#update-stock-body">
+                            <div class="method method-put">PUT</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}/stock</div>
+                            <div class="endpoint-description">Update product stock</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="update-stock-body">
+                            <p>Updates the stock of an existing product.</p>
+
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#update-stock-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                                <pre id="update-stock-body">{
+  "stock": 150
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Clipboard.js for Copy Functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Clipboard.js
+            var clipboard = new ClipboardJS('.copy-btn');
+
+            clipboard.on('success', function (e) {
+                const originalText = e.trigger.innerHTML;
+                e.trigger.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(function () {
+                    e.trigger.innerHTML = originalText;
+                }, 2000);
+                e.clearSelection();
+            });
+
+            // Initialize Bootstrap collapse components
+            const endpointHeaders = document.querySelectorAll('.endpoint-header');
+            endpointHeaders.forEach(header => {
+                header.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-bs-target');
+                    const targetBody = document.querySelector(targetId);
+
+                    // Create a new Bootstrap Collapse instance and toggle it
+                    const bsCollapse = new bootstrap.Collapse(targetBody, {
+                        toggle: true
+                    });
+                });
+            });
+
+            // Back to top button
+            const backToTopButton = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', function () {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+
+            backToTopButton.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Active link highlighting in sidebar
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            const sections = document.querySelectorAll('.api-section, .intro-section');
+
+            function setActiveLink() {
+                let currentSection = '';
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+
+                    if (window.pageYOffset >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink();
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Product Form Modal -->
+    <div class="modal fade" id="productFormModal" tabindex="-1" aria-labelledby="productFormModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productFormModalLabel">Create New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name*</label>
+                                <input type="text" class="form-control" id="name" name="name" required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="slug" class="form-label">Slug*</label>
+                                <input type="text" class="form-control" id="slug" name="slug" required>
+                                <small class="text-muted">Will be auto-generated if left empty</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="baseQuantity" class="form-label">Base Quantity*</label>
+                                <input type="text" class="form-control" id="baseQuantity" name="baseQuantity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="quantityUnit" class="form-label">Quantity Unit*</label>
+                                <select class="form-select" id="quantityUnit" name="quantityUnit" required>
+                                    <option value="">Select unit</option>
+                                    <option value="g">Grams (g)</option>
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="ml">Milliliters (ml)</option>
+                                    <option value="l">Liters (l)</option>
+                                    <option value="pcs">Pieces (pcs)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="stockUnit" class="form-label">Stock Unit*</label>
+                                <select class="form-select" id="stockUnit" name="stockUnit" required>
+                                    <option value="">Select unit</option>
+                                    <option value="g">Grams (g)</option>
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="ml">Milliliters (ml)</option>
+                                    <option value="l">Liters (l)</option>
+                                    <option value="pcs">Pieces (pcs)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="price" class="form-label">Price*</label>
+                                <input type="number" class="form-control" id="price" name="price" min="0" step="0.01"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="salePrice" class="form-label">Sale Price</label>
+                                <input type="number" class="form-control" id="salePrice" name="salePrice" min="0"
+                                    step="0.01">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="discountPercentage" class="form-label">Discount %</label>
+                                <input type="number" class="form-control" id="discountPercentage"
+                                    name="discountPercentage" min="0" max="100">
+                                <small class="text-muted">Auto-calculated if left empty</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="stock" class="form-label">Stock*</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stockStatus" class="form-label">Stock Status*</label>
+                                <select class="form-select" id="stockStatus" name="stockStatus" required>
+                                    <option value="">Select status</option>
+                                    <option value="in stock">In Stock</option>
+                                    <option value="low stock">Low Stock</option>
+                                    <option value="out of stock">Out of Stock</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="primaryCategory" class="form-label">Primary Category*</label>
+                            <select class="form-select" id="primaryCategory" name="primaryCategory" required>
+                                <option value="">Select category</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e1">Fruits</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e2">Vegetables</option>
+                                <option value="uncategorized">Uncategorized</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="categories" class="form-label">Additional Categories</label>
+                            <select class="form-select" id="categories" name="categories" multiple>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e1">Fruits</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e2">Vegetables</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e3">Organic</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e4">Local</option>
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description*</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="shortDescription" class="form-label">Short Description</label>
+                            <textarea class="form-control" id="shortDescription" name="shortDescription"
+                                rows="2"></textarea>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="onSale" name="onSale">
+                                    <label class="form-check-label" for="onSale">On Sale</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="seasonal" name="seasonal">
+                                    <label class="form-check-label" for="seasonal">Seasonal</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="featured" name="featured">
+                                    <label class="form-check-label" for="featured">Featured</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="images" class="form-label">Images</label>
+                            <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Additional Information</label>
+                            <div id="additionalInfoContainer">
+                                <div class="row mb-2 additional-info-row">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="additionalInfoKey[]"
+                                            placeholder="Key (e.g. Origin)">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="additionalInfoValue[]"
+                                            placeholder="Value (e.g. Local Farms)">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger remove-info">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addInfoBtn">Add More
+                                Info</button>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="publishStatus" class="form-label">Publish Status</label>
+                            <select class="form-select" id="publishStatus" name="publishStatus">
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="publishDate" class="form-label">Publish Date</label>
+                            <input type="datetime-local" class="form-control" id="publishDate" name="publishDate">
+                            <small class="text-muted">Auto-set when published if left empty</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitProduct">Create Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Response Modal -->
+    <div class="modal fade" id="apiResponseModal" tabindex="-1" aria-labelledby="apiResponseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="apiResponseModalLabel">API Response</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="code-block response-success">
+                        <div class="code-header">
+                            <span class="code-title">201 Created</span>
+                            <button class="copy-btn" data-clipboard-target="#create-product-response">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre id="create-product-response">{
+  "success": true,
+  "data": {
+    "product": {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e5",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "stock": 100,
+      "stockUnit": "kg",
+      "stockStatus": "in stock",
+      "categories": [
+        {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      ],
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      },
+      "description": "Fresh organic apples from local farms.",
+      "shortDescription": "Fresh organic apples",
+      "onSale": true,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "additionalInfo": {
+        "origin": "Local Farms",
+        "organic": "Yes",
+        "storage": "Keep refrigerated"
+      },
+      "seasonal": true,
+      "featured": true,
+      "publishStatus": "published",
+      "publishDate": "2023-01-15T00:00:00.000Z",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "updatedAt": "2023-01-15T00:00:00.000Z"
+    }
+  }
+}</pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this script to handle the form functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add a "Try It" button to the create product endpoint
+            const createProductCard = document.getElementById('create-product');
+            if (createProductCard) {
+                const header = createProductCard.querySelector('.endpoint-header');
+                const tryItBtn = document.createElement('button');
+                tryItBtn.className = 'btn btn-sm btn-primary ms-2';
+                tryItBtn.textContent = 'Try It';
+                tryItBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const productFormModal = new bootstrap.Modal(document.getElementById('productFormModal'));
+                    productFormModal.show();
+                });
+                header.appendChild(tryItBtn);
+            }
+
+            // Handle additional info fields
+            const addInfoBtn = document.getElementById('addInfoBtn');
+            const additionalInfoContainer = document.getElementById('additionalInfoContainer');
+
+            addInfoBtn.addEventListener('click', function () {
+                const newRow = document.createElement('div');
+                newRow.className = 'row mb-2 additional-info-row';
+                newRow.innerHTML = `
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="additionalInfoKey[]" placeholder="Key (e.g. Origin)">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="additionalInfoValue[]" placeholder="Value (e.g. Local Farms)">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-info">Remove</button>
+                    </div>
+                `;
+                additionalInfoContainer.appendChild(newRow);
+            });
+
+            // Event delegation for remove buttons
+            additionalInfoContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('remove-info')) {
+                    e.target.closest('.additional-info-row').remove();
+                }
+            });
+
+            // Handle form submission
+            const submitProductBtn = document.getElementById('submitProduct');
+            submitProductBtn.addEventListener('click', function () {
+                // In a real app, you would collect form data and send it to the API
+                // For this demo, we'll just show the success response
+                const apiResponseModal = new bootstrap.Modal(document.getElementById('apiResponseModal'));
+                apiResponseModal.show();
+            });
+
+            // Auto-generate slug from name
+            const nameInput = document.getElementById('name');
+            const slugInput = document.getElementById('slug');
+
+            nameInput.addEventListener('input', function () {
+                if (!slugInput.value) {
+                    slugInput.value = nameInput.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '');
+                }
+            });
+
+            // Auto-calculate discount percentage
+            const priceInput = document.getElementById('price');
+            const salePriceInput = document.getElementById('salePrice');
+            const discountInput = document.getElementById('discountPercentage');
+
+            function updateDiscount() {
+                const price = parseFloat(priceInput.value);
+                const salePrice = parseFloat(salePriceInput.value);
+
+                if (price && salePrice && price > salePrice) {
+                    const discount = Math.round(((price - salePrice) / price) * 100);
+                    discountInput.value = discount;
+                } else {
+                    discountInput.value = '';
+                }
+            }
+
+            priceInput.addEventListener('input', updateDiscount);
+            salePriceInput.addEventListener('input', updateDiscount);
+        });
+    </script>
+</body>
+
+</html>
