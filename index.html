@@ -760,6 +760,302 @@ const startPayment = async () => {
         </section>
     </div>
 
+    <section class="mb-5">
+        <div class="container">
+            <h2>Example Code for Server Side</h2>
+            <p>
+                The payment flow implementation is as follows:
+            </p>
+            <pre class="code-block">
+                // PhonePe Configuration
+                const ENV = 'UAT';
+                const BASE_URL = 'https://api-preprod.phonepe.com/apis/pg-sandbox';
+                
+                const CLIENT_ID = 'SAHILSERVICEUAT_2502271726363855954563';
+                const CLIENT_SECRET = 'NmZhYzQ2ZDEtZWE0Mi00MGJkLWJiYzEtMzczYTE1M2UzMTAy';
+                const CLIENT_VERSION = 1;
+                const MERCHANT_ID = 'SAHILSERVICEUAT';
+                
+                // Store token in memory (use Redis in production)
+                let tokenCache = {
+                    access_token: null,
+                    expires_at: 0
+                };
+                
+                export const generateAuthToken = async () => {
+                    try {
+                        const formData = new URLSearchParams();
+                        formData.append('client_id', CLIENT_ID);
+                        formData.append('client_secret', CLIENT_SECRET);
+                        formData.append('client_version', CLIENT_VERSION.toString());
+                        formData.append('grant_type', 'client_credentials');
+                
+                        const response = await fetch(`${BASE_URL}/v1/oauth/token`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Accept': 'application/json'
+                            },
+                            body: formData.toString()
+                        });
+                
+                        const data = await response.json();
+                        
+                        if (data.access_token) {
+                            tokenCache = {
+                                access_token: data.access_token,
+                                expires_at: data.expires_at
+                            };
+                            return data.access_token;
+                        }
+                        throw new Error('No access token in response');
+                
+                    } catch (error) {
+                        console.error('Auth Token Generation Error:', error);
+                        throw error;
+                    }
+                };
+                
+                export const createOrder = async (amount) => {
+                    try {
+                        const token = tokenCache.access_token;
+                        if (!token) {
+                            throw new Error('No auth token available');
+                        }
+                
+                        // Create a unique merchant order ID (only alphanumeric, underscore, and hyphen allowed)
+                        const merchantOrderId = `ORDER${Date.now()}${Math.random().toString(36).slice(2, 6)}`.replace(/[^a-zA-Z0-9_-]/g, '');
+                        console.log("merchantOrderId", merchantOrderId);
+                
+                        const orderPayload = {
+                            merchantOrderId: merchantOrderId,
+                            amount: amount,
+                            expireAfter: 1200,
+                            metaInfo: {
+                                udf1: "React Native App",
+                                udf2: merchantOrderId
+                            },
+                            paymentFlow: {
+                                type: "PG_CHECKOUT"
+                            }
+                        };
+                
+                        console.log('Creating order with payload:', orderPayload);
+                
+                        const response = await fetch(`${BASE_URL}/checkout/v2/sdk/order`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `O-Bearer ${token}`,
+                            },
+                            body: JSON.stringify(orderPayload)
+                        });
+                
+                        const data = await response.json();
+                
+                
+                        if (!response.ok) {
+                            throw new Error(data.message || `HTTP error! status: ${response.status}`);
+                        }
+                
+                        if (!data.orderId || !data.token) {
+                            throw new Error('Invalid order response structure');
+                        }
+                
+                        console.log('Create Order Response:', data);
+                        console.log('Create Order Response:', data.orderId);
+                        console.log('Create Order Response:', data.token);
+                        console.log('Create Order Response:', data.state);
+                
+                        return {
+                            orderId: data.orderId,
+                            token: data.token,
+                            merchantOrderId: merchantOrderId,
+                            state: data.state
+                        };
+                
+                    } catch (error) {
+                        console.error('Create Order Error:', error);
+                        throw error;
+                    }
+                };
+                
+                
+</pre>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <div class="container">
+            <h2>Example Code for Client Side</h2>
+            <p>
+                The payment flow implementation is as follows:
+            </p>
+            <pre class="code-block">
+                import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import PhonePePaymentSDK from 'react-native-phonepe-pg';
+import { generateAuthToken, createOrder } from '../../api/server';
+
+const PhonePePayment = () => {
+    const [isSDKInitialized, setIsSDKInitialized] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        initializeSDKAndToken();
+    }, []);
+
+    const initializeSDKAndToken = async () => {
+        try {
+            // Initialize SDK
+            const sdkResult = await PhonePePaymentSDK.init(
+                "SANDBOX",
+                "SAHILSERVICEUAT",
+                `FLOW_${Date.now()}`,
+                true
+            );
+            console.log("SDK Initialization Result:", sdkResult);
+            setIsSDKInitialized(true);
+
+            // Generate auth token
+            await generateAuthToken();
+        } catch (error) {
+            console.error("Initialization Error:", error);
+            Alert.alert("Error", "Failed to initialize payment system");
+        }
+    };
+
+    const startPayment = async () => {
+        if (!isSDKInitialized) {
+            Alert.alert("Error", "Payment system not initialized");
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            // Create order
+            const orderData = await createOrder(100); // ₹1 = 100 paise
+            console.log('Order created:', orderData);
+
+            // Prepare transaction request
+            const requestBody = {
+                orderId: orderData.orderId,
+                merchantId: "SAHILSERVICEUAT",
+                merchantOrderId: orderData.merchantOrderId,
+                token: orderData.token,
+                amount: 100,
+                paymentMode: {
+                    type: "PAY_PAGE",
+                    paymentModeConfig: {
+                        enabledPaymentModes: [
+                            {
+                                type: "UPI_INTENT"
+                            },
+                            {
+                                type: "UPI_COLLECT"
+                            },
+                            {
+                                type: "UPI_QR"
+                            },
+                            {
+                                type: "CARD",
+                                cardTypes: ["DEBIT_CARD", "CREDIT_CARD"]
+                            }
+                        ]
+                    }
+                },
+                redirectUrl: "https://webhook.site/redirect-url",
+                callbackUrl: "https://webhook.site/3da7dced-4e73-46b8-8760-8fa47482d359",
+                deviceContext: {
+                    deviceOS: "ANDROID"
+                }
+            };
+
+            console.log('Starting transaction with:', requestBody);
+
+            // Start transaction
+            const response = await PhonePePaymentSDK.startTransaction(
+                JSON.stringify(requestBody),
+                null
+            );
+            console.log("Transaction Response:", response);
+            
+            handlePaymentStatus(response);
+
+        } catch (error) {
+            console.error("Payment Error:", error);
+            Alert.alert(
+                "Error",
+                error.message || "Payment failed. Please try again."
+            );
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handlePaymentStatus = (response) => {
+        switch (response.status) {
+            case "SUCCESS":
+                Alert.alert("Success", "Payment completed successfully!");
+                break;
+            case "FAILURE":
+                Alert.alert("Failed", "Payment failed. Please try again.");
+                break;
+            case "CANCELLED":
+                Alert.alert("Cancelled", "Payment was cancelled.");
+                break;
+            default:
+                Alert.alert("Status", `Unknown payment status: ${response.status}`);
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity 
+                style={[
+                    styles.payButton,
+                    (!isSDKInitialized || isLoading) && styles.disabledButton
+                ]}
+                onPress={startPayment}
+                disabled={!isSDKInitialized || isLoading}
+            >
+                <Text style={styles.buttonText}>
+                    {isLoading ? 'Processing...' : 'Pay ₹1 with PhonePe'}
+                </Text>
+            </TouchableOpacity>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    payButton: {
+        backgroundColor: '#5f259f',
+        padding: 15,
+        borderRadius: 8,
+        width: '100%',
+        alignItems: 'center',
+    },
+    disabledButton: {
+        backgroundColor: '#cccccc',
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    }
+});
+
+export default PhonePePayment; 
+            </pre>
+        </div>
+    </section>
+
     <footer class="bg-light py-3 mt-5">
         <div class="container text-center">
             <p>For more information, visit <a href="https://developer.phonepe.com/docs">PhonePe Developer Documentation</a></p>
