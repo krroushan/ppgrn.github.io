@@ -6,6 +6,11 @@
     <title>PhonePe Payment Gateway Integration - React Native Guide</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --phonepe-purple: #5f259f;
@@ -39,25 +44,38 @@
         }
 
         .code-block {
-            background-color: var(--code-bg);
-            color: #e6e6e6;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            font-family: 'Consolas', monospace;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            margin: 20px 0;
             position: relative;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            overflow: hidden;
         }
 
-        .code-block::before {
-            content: '';
+        .code-block pre {
+            margin: 0;
+            padding: 20px;
+            max-height: 500px;
+            overflow: auto;
+        }
+
+        .code-block code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .code-block::after {
+            content: attr(data-language);
             position: absolute;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--phonepe-purple), var(--phonepe-light));
-            border-radius: 10px 10px 0 0;
+            right: 0;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--phonepe-purple);
+            border-bottom-left-radius: 8px;
         }
 
         .step-number {
@@ -148,26 +166,140 @@
             background: var(--phonepe-light);
         }
 
-        /* Code Copy Button */
+        /* Enhanced Code Block Styling */
         .code-block {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            margin: 20px 0;
             position: relative;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            overflow: hidden;
         }
 
+        .code-block pre {
+            margin: 0;
+            padding: 20px;
+            max-height: 500px;
+            overflow: auto;
+        }
+
+        .code-block code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Language Label */
+        .code-block::after {
+            content: attr(data-language);
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--phonepe-purple);
+            border-bottom-left-radius: 8px;
+        }
+
+        /* Line Numbers */
+        .line-numbers .line-numbers-rows {
+            border-right: 2px solid #404040;
+            padding: 20px 0;
+        }
+
+        .line-numbers .line-numbers-rows > span:before {
+            color: #666;
+            padding-right: 20px;
+        }
+
+        /* Copy Button */
         .copy-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 12px;
+            right: 70px;
             background: rgba(255,255,255,0.1);
-            border: none;
+            border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
         }
 
         .copy-btn:hover {
             background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .copy-btn i {
+            font-size: 14px;
+        }
+
+        /* Syntax Highlighting Enhancements */
+        .token.comment,
+        .token.prolog,
+        .token.doctype,
+        .token.cdata {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .token.function {
+            color: #dcdcaa;
+        }
+
+        .token.keyword {
+            color: #569cd6;
+        }
+
+        .token.string {
+            color: #ce9178;
+        }
+
+        .token.number {
+            color: #b5cea8;
+        }
+
+        .token.boolean {
+            color: #569cd6;
+        }
+
+        .token.constant {
+            color: #4fc1ff;
+        }
+
+        .token.class-name {
+            color: #4ec9b0;
+        }
+
+        .token.operator {
+            color: #d4d4d4;
+        }
+
+        /* Scrollbar Styling */
+        .code-block pre::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .code-block pre::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .code-block pre::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+
+        .code-block pre::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
         /* Section Transitions */
@@ -229,12 +361,14 @@
 
         <section class="mb-5">
             <h2><span class="step-number">1</span>Installation</h2>
-            <div class="code-block">
+            <div class="code-block" data-language="javascript">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>npm i react-native-phonepe-pg -f
-npm i -f</pre>
+                <pre class="line-numbers"><code class="language-javascript">
+npm i react-native-phonepe-pg -f
+npm i -f</code></pre>
             </div>
         </section>
 
@@ -243,11 +377,12 @@ npm i -f</pre>
             
             <h3 class="mt-4">Android Setup</h3>
             <p>Add the following to your project level build.gradle:</p>
-            <div class="code-block">
+            <div class="code-block" data-language="gradle">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-gradle">
 allprojects { 
     repositories { 
         google() 
@@ -255,16 +390,17 @@ allprojects {
             url "https://phonepe.mycloudrepo.io/public/repositories/phonepe-intentsdk-android" 
         } 
     } 
-}</pre>
+}</code></pre>
             </div>
 
             <h3 class="mt-4">iOS Setup</h3>
             <p>1. Add URL schemes to Info.plist:</p>
-            <div class="code-block">
+            <div class="code-block" data-language="xml">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-xml">
 &lt;key&gt;LSApplicationQueriesSchemes&lt;/key&gt; 
 &lt;array&gt; 
     &lt;string&gt;ppemerchantsdkv1&lt;/string&gt;  
@@ -272,7 +408,7 @@ allprojects {
     &lt;string&gt;ppemerchantsdkv3&lt;/string&gt;
     &lt;string&gt;paytmmp&lt;/string&gt;
     &lt;string&gt;gpay&lt;/string&gt;
-&lt;/array&gt;</pre>
+&lt;/array&gt;</code></pre>
             </div>
 
             <p>2. Add URL Type for deep linking in Xcode</p>
@@ -286,20 +422,23 @@ allprojects {
             </div>
 
             <p>3. Install iOS dependencies:</p>
-            <div class="code-block">
+            <div class="code-block" data-language="bash">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>cd ios 
-pod install</pre>
+                <pre class="line-numbers"><code class="language-bash">
+cd ios 
+pod install</code></pre>
             </div>
 
             <p>4. Add deep linking handler to AppDelegate.m:</p>
-            <div class="code-block">
+            <div class="code-block" data-language="objective-c">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-objective-c">
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options 
 { 
     NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init]; 
@@ -307,18 +446,19 @@ pod install</pre>
     [userInfo setObject:url forKey:@"openUrl"]; 
     [[NSNotificationCenter defaultCenter] postNotificationName: @"ApplicationOpenURLNotification" object:nil userInfo:userInfo]; 
     return YES; 
-}</pre>
+}</code></pre>
             </div>
         </section>
 
         <section class="mb-5">
             <h2><span class="step-number">3</span>Configuration</h2>
             <p>Create a configuration file (api/server.js):</p>
-            <div class="code-block">
+            <div class="code-block" data-language="javascript">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-javascript">
 // PhonePe Configuration
 const ENV = 'UAT';  // or 'PROD' for production
 const BASE_URL = 'https://api-preprod.phonepe.com/apis/pg-sandbox';
@@ -331,17 +471,18 @@ const MERCHANT_ID = 'YOUR_MERCHANT_ID';
 let tokenCache = {
     access_token: null,
     expires_at: 0
-};</pre>
+};</code></pre>
             </div>
         </section>
 
         <section class="mb-5">
             <h2><span class="step-number">4</span>Auth Token Generation</h2>
-            <div class="code-block">
+            <div class="code-block" data-language="javascript">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-javascript">
 export const generateAuthToken = async () => {
     try {
         const formData = new URLSearchParams();
@@ -371,17 +512,18 @@ export const generateAuthToken = async () => {
     } catch (error) {
         throw error;
     }
-};</pre>
+};</code></pre>
             </div>
         </section>
 
         <section class="mb-5">
             <h2><span class="step-number">5</span>Order Creation</h2>
-            <div class="code-block">
+            <div class="code-block" data-language="javascript">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-javascript">
 export const createOrder = async (amount) => {
     try {
         const token = tokenCache.access_token;
@@ -423,18 +565,19 @@ export const createOrder = async (amount) => {
     } catch (error) {
         throw error;
     }
-};</pre>
+};</code></pre>
             </div>
         </section>
 
         <section class="mb-5">
             <h2><span class="step-number">6</span>Payment Component Implementation</h2>
             <p>Create a new component (screens/main/PhonePePayment.jsx):</p>
-            <div class="code-block">
+            <div class="code-block" data-language="javascript">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-javascript">
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import PhonePePaymentSDK from 'react-native-phonepe-pg';
@@ -467,17 +610,18 @@ const PhonePePayment = () => {
             </TouchableOpacity>
         </View>
     );
-};</pre>
+};</code></pre>
             </div>
         </section>
 
         <section class="mb-5">
             <h2><span class="step-number">7</span>Payment Flow Implementation</h2>
-            <div class="code-block">
+            <div class="code-block" data-language="javascript">
                 <button class="copy-btn">
                     <i class="fas fa-copy"></i>
+                    <span>Copy</span>
                 </button>
-                <pre>
+                <pre class="line-numbers"><code class="language-javascript">
 const startPayment = async () => {
     if (!isSDKInitialized) {
         Alert.alert("Error", "Payment system not initialized");
@@ -515,7 +659,7 @@ const startPayment = async () => {
     } finally {
         setIsLoading(false);
     }
-};</pre>
+};</code></pre>
             </div>
         </section>
 
@@ -555,36 +699,36 @@ const startPayment = async () => {
                     <p><strong>Base URL:</strong> <code>https://api-preprod.phonepe.com/apis/pg-sandbox</code> (UAT)</p>
                     
                     <h6>Request Headers:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Accept': 'application/json'
-}</pre>
+}</code></pre>
 
                     <h6>Request Body:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-javascript">
 {
     client_id: 'YOUR_CLIENT_ID',
     client_secret: 'YOUR_CLIENT_SECRET',
     client_version: '1',
     grant_type: 'client_credentials'
-}</pre>
+}</code></pre>
 
                     <h6>Success Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-javascript">
 {
     "access_token": "eyJhbGciOiJIUzI1...",
     "token_type": "Bearer",
     "expires_in": 3600,
     "expires_at": 1679831543000
-}</pre>
+}</code></pre>
 
                     <h6>Error Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-javascript">
 {
     "error": "invalid_client",
     "error_description": "Invalid client credentials"
-}</pre>
+}</code></pre>
                 </div>
             </div>
 
@@ -599,14 +743,14 @@ const startPayment = async () => {
                     </p>
                     
                     <h6>Request Headers:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     'Content-Type': 'application/json',
     'Authorization': 'O-Bearer YOUR_ACCESS_TOKEN'
-}</pre>
+}</code></pre>
 
                     <h6>Request Body:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "merchantOrderId": "ORDER123456789",
     "amount": 100,                    // Amount in paise
@@ -618,10 +762,10 @@ const startPayment = async () => {
     "paymentFlow": {
         "type": "PG_CHECKOUT"
     }
-}</pre>
+}</code></pre>
 
                     <h6>Success Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "success": true,
     "code": "SUCCESS",
@@ -632,15 +776,15 @@ const startPayment = async () => {
         "merchantOrderId": "ORDER123456789",
         "state": "CREATED"
     }
-}</pre>
+}</code></pre>
 
                     <h6>Error Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "success": false,
     "code": "ERROR_CODE",
     "message": "Error description"
-}</pre>
+}</code></pre>
                 </div>
             </div>
 
@@ -652,7 +796,7 @@ const startPayment = async () => {
                     <p><strong>Method:</strong> SDK Method Call</p>
                     
                     <h6>Request Body:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "orderId": "PGTXN123456789",
     "merchantId": "YOUR_MERCHANT_ID",
@@ -667,10 +811,10 @@ const startPayment = async () => {
     "deviceContext": {
         "deviceOS": "ANDROID"  // or "IOS"
     }
-}</pre>
+}</code></pre>
 
                     <h6>Success Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "status": "SUCCESS",
     "code": "PAYMENT_SUCCESS",
@@ -679,17 +823,17 @@ const startPayment = async () => {
     "transactionId": "PGTXN123456789",
     "amount": 100,
     "providerReferenceId": "UPI123456789"
-}</pre>
+}</code></pre>
 
                     <h6>Error/Failure Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "status": "FAILURE",
     "code": "PAYMENT_ERROR",
     "message": "Payment failed",
     "merchantId": "YOUR_MERCHANT_ID",
     "merchantOrderId": "ORDER123456789"
-}</pre>
+}</code></pre>
                 </div>
             </div>
 
@@ -702,14 +846,14 @@ const startPayment = async () => {
                     <p><strong>Method:</strong> GET</p>
                     
                     <h6>Request Headers:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
-}</pre>
+}</code></pre>
 
                     <h6>Success Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "success": true,
     "code": "PAYMENT_SUCCESS",
@@ -726,10 +870,10 @@ const startPayment = async () => {
             "utr": "123456789"
         }
     }
-}</pre>
+}</code></pre>
 
                     <h6>Error Response:</h6>
-                    <pre class="code-block">
+                    <pre class="code-block line-numbers"><code class="language-jsx">
 {
     "success": false,
     "code": "PAYMENT_PENDING",
@@ -739,7 +883,7 @@ const startPayment = async () => {
         "merchantOrderId": "ORDER123456789",
         "state": "PENDING"
     }
-}</pre>
+}</code></pre>
                 </div>
             </div>
 
@@ -766,7 +910,7 @@ const startPayment = async () => {
             <p>
                 The payment flow implementation is as follows:
             </p>
-            <pre class="code-block">
+            <pre class="code-block line-numbers"><code class="language-jsx">
                 // PhonePe Configuration
                 const ENV = 'UAT';
                 const BASE_URL = 'https://api-preprod.phonepe.com/apis/pg-sandbox';
@@ -881,7 +1025,7 @@ const startPayment = async () => {
                 };
                 
                 
-</pre>
+</code></pre>
         </div>
     </section>
 
@@ -891,7 +1035,7 @@ const startPayment = async () => {
             <p>
                 The payment flow implementation is as follows:
             </p>
-            <pre class="code-block">
+            <pre class="code-block line-numbers"><code class="language-jsx">
                 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import PhonePePaymentSDK from 'react-native-phonepe-pg';
@@ -1052,7 +1196,7 @@ const styles = StyleSheet.create({
 });
 
 export default PhonePePayment; 
-            </pre>
+            </code></pre>
         </div>
     </section>
 
@@ -1063,18 +1207,30 @@ export default PhonePePayment;
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
     <script>
-        // Copy button functionality
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const code = btn.nextElementSibling.textContent;
-                navigator.clipboard.writeText(code);
+                const code = btn.nextElementSibling.querySelector('code').textContent;
+                navigator.clipboard.writeText(code.trim());
                 
-                // Show feedback
-                const originalContent = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i>';
+                const span = btn.querySelector('span');
+                const originalText = span.textContent;
+                const icon = btn.querySelector('i');
+                
+                btn.classList.add('success');
+                span.textContent = 'Copied!';
+                icon.className = 'fas fa-check';
+                
                 setTimeout(() => {
-                    btn.innerHTML = originalContent;
+                    btn.classList.remove('success');
+                    span.textContent = originalText;
+                    icon.className = 'fas fa-copy';
                 }, 2000);
             });
         });
@@ -1094,6 +1250,9 @@ export default PhonePePayment;
         document.querySelectorAll('section').forEach(section => {
             observer.observe(section);
         });
+
+        // Initialize Prism.js with line numbers
+        Prism.highlightAll();
     </script>
 </body>
 </html>
