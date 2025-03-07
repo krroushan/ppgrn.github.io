@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product API Documentation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <h5 class="mb-3">API Documentation</h5>
+                    <div class="nav flex-column">
+                        <a class="nav-link active" href="#introduction">Introduction</a>
+                        
+                        <div class="nav-heading">Public Endpoints</div>
+                        <a class="nav-link" href="#products-list">List Products</a>
+                        <a class="nav-link" href="#product-detail">Get Product Detail</a>
+                        <a class="nav-link" href="#featured-products">Featured Products</a>
+                        <a class="nav-link" href="#on-sale-products">On Sale Products</a>
+                        <a class="nav-link" href="#seasonal-products">Seasonal Products</a>
+                        <a class="nav-link" href="#stock-status">Products by Stock Status</a>
+                        <a class="nav-link" href="#related-products">Related Products</a>
+                        <a class="nav-link" href="#category-products">Category Products</a>
+                        <a class="nav-link" href="#search-products">Search Products</a>
+                        <a class="nav-link" href="#product-filters">Product Filters</a>
+                        <a class="nav-link" href="#recommendations">Product Recommendations</a>
+                        
+                        <div class="nav-heading">Admin Endpoints</div>
+                        <a class="nav-link" href="#admin-products-list">Admin Products List</a>
+                        <a class="nav-link" href="#admin-product-detail">Admin Product Detail</a>
+                        <a class="nav-link" href="#create-product">Create Product</a>
+                        <a class="nav-link" href="#update-product">Update Product</a>
+                        <a class="nav-link" href="#delete-product">Delete Product</a>
+                        <a class="nav-link" href="#bulk-operations">Bulk Operations</a>
+                        <a class="nav-link" href="#product-stats">Product Stats</a>
+                        <a class="nav-link" href="#update-stock">Update Stock</a>
+                        
+                        <div class="nav-heading">User Endpoints</div>
+                        <a class="nav-link" href="#recently-viewed">Recently Viewed Products</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Introduction -->
+                <div class="intro-section" id="introduction">
+                    <h1>Product API Documentation</h1>
+                    <p class="lead">Welcome to the Product API documentation. This API provides endpoints for managing products in your e-commerce application.</p>
+                    
+                    <h4 class="mt-4">Base URL</h4>
+                    <div class="code-block">
+                        <code>http://localhost:3000/api</code>
+                    </div>
+                    
+                    <h4 class="mt-4">Authentication</h4>
+                    <p>Most endpoints require authentication. Admin endpoints require admin privileges.</p>
+                    <div class="code-block">
+                        <code>Authorization: Bearer &lt;your_token&gt;</code>
+                    </div>
+                    
+                    <h4 class="mt-4">Response Format</h4>
+                    <p>All responses follow a standard format:</p>
+                    <div class="code-block">
+<pre>{
+  "success": true,
+  "data": { ... } // Response data
+}
+
+// Error response
+{
+  "success": false,
+  "error": "Error message"
+}</pre>
+                    </div>
+                </div>
+                
+                <!-- Public Endpoints -->
+                <div class="api-section" id="products-list">
+                    <h2>Public Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#products-list-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products</div>
+                            <div class="endpoint-description">List all products</div>
+                        </div>
+                        <div class="endpoint-body" id="products-list-body">
+                            <p>Returns a paginated list of products with optional filtering.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">page</td>
+                                            <td class="param-type">number</td>
+                                            <td>Page number (default: 1)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Items per page (default: 12)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">category</td>
+                                            <td class="param-type">string</td>
+                                            <td>Filter by category ID</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">primaryCategory</td>
+                                            <td class="param-type">string</td>
+                                            <td>Filter by primary category ID</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">featured</td>
+                                            <td class="param-type">boolean</td>
+                                            <td>Filter featured products</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">onSale</td>
+                                            <td class="param-type">boolean</td>
+                                            <td>Filter products on sale</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">keyword</td>
+                                            <td class="param-type">string</td>
+                                            <td>Search by keyword</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">seasonal</td>
+                                            <td class="param-type">boolean</td>
+                                            <td>Filter seasonal products</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">stockStatus</td>
+                                            <td class="param-type">string</td>
+                                            <td>Filter by stock status</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">minPrice</td>
+                                            <td class="param-type">number</td>
+                                            <td>Minimum price filter</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">maxPrice</td>
+                                            <td class="param-type">number</td>
+                                            <td>Maximum price filter</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">inStock</td>
+                                            <td class="param-type">boolean</td>
+                                            <td>Filter in-stock products</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">sort</td>
+                                            <td class="param-type">string</td>
+                                            <td>Sort order (price-asc, price-desc, name-asc, name-desc, newest, oldest)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#products-list-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="products-list-url">GET /api/products</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#products-list-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="products-list-response">{
+  "success": true,
+  "data": {
+    "products": [
+    {
+        "_id": "67cb37235a47c5f25c335e6f",
+        "name": "bhjbjdbvfhd",
+        "slug": "bhjbjdbvfhd",
+        "baseQuantity": "55",
+        "quantityUnit": "g",
+        "price": 54.98,
+        "salePrice": 44.97,
+        "discountPercentage": 18,
+        "sku": "NJV-BHJBJ-9136",
+        "stock": 44,
+        "stockUnit": "kg",
+        "stockStatus": "in stock",
+        "categories": [
+            {
+                "_id": "67c47d5bc642868df2cf7a51",
+                "name": "Rooted",
+                "slug": "root"
+            }
+        ],
+        "primaryCategory": {
+            "_id": "67cb12fe776d1d1ec3474520",
+            "name": "njvjbj gh",
+            "slug": "njvjbj-gh"
+        },
+        "description": "vbhbvhbfd",
+        "shortDescription": "jhbvbfjbh",
+        "onSale": true,
+        "images": [
+            "https://res.cloudinary.com/dimqgbm0q/image/upload/v1741371085/product-images/sugdjvtnisgiiciuggva.png"
+        ],
+        "additionalInfo": {
+            "bhbvjbjdf": "bjhfbvbhf",
+            "bbhjbf": "vbvhfhfd"
+        },
+        "seasonal": false,
+        "featured": false,
+        "publishStatus": "published",
+        "publishDate": "2025-03-07T18:12:51.112Z",
+        "publishedBy": "67c44776ff593c26f1a9ca4b",
+        "createdAt": "2025-03-07T18:12:51.112Z",
+        "updatedAt": "2025-03-07T18:12:51.117Z",
+        "availability": [
+            {
+                "state": "Bihar",
+                "cities": [
+                    "Patna",
+                    "Hajipur"
+                ],
+                "stock": 100,
+                "price": 45,
+                "salePrice": 5,
+                "_id": "67cb37235a47c5f25c335e70"
+            },
+            {
+                "state": "Maharashtra",
+                "cities": [
+                    "Mumbai"
+                ],
+                "stock": 55,
+                "price": 77,
+                "salePrice": 55,
+                "_id": "67cb37235a47c5f25c335e71"
+            }
+        ],
+        "isNationwide": false,
+        "__v": 0
+    },
+      // More products...
+    ],
+    "pagination": {
+      "total": 50,
+      "page": 1,
+      "limit": 12,
+      "pages": 5
+    }
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="product-detail">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#product-detail-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/{slug}</div>
+                            <div class="endpoint-description">Get product details</div>
+                        </div>
+                        <div class="endpoint-body" id="product-detail-body">
+                            <p>Returns detailed information about a specific product.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#product-detail-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="product-detail-url">GET /api/products/organic-apples</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#product-detail-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="product-detail-response">{
+  "success": true,
+  "data": {
+    "product": {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "stock": 100,
+      "stockUnit": "kg",
+      "stockStatus": "in stock",
+      "categories": [
+        {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      ],
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      },
+      "description": "Fresh organic apples from local farms.",
+      "shortDescription": "Fresh organic apples",
+      "onSale": true,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "additionalInfo": {
+        "origin": "Local Farms",
+        "organic": "Yes",
+        "storage": "Keep refrigerated"
+      },
+      "seasonal": true,
+      "featured": true,
+      "publishStatus": "published",
+      "publishDate": "2023-01-15T00:00:00.000Z",
+      "createdAt": "2023-01-10T00:00:00.000Z",
+      "updatedAt": "2023-01-15T00:00:00.000Z"
+    },
+    "relatedProducts": [
+      // Related products...
+    ]
+  }
+}</pre>
+                            </div>
+                            
+                            <div class="code-block response-error">
+                                <div class="code-header">
+                                    <span class="code-title">404 Not Found</span>
+                                    <button class="copy-btn" data-clipboard-target="#product-detail-error">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="product-detail-error">{
+  "success": false,
+  "error": "Product not found"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="featured-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#featured-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/user/products/featured</div>
+                            <div class="endpoint-description">Get featured products</div>
+                        </div>
+                        <div class="endpoint-body" id="featured-products-body">
+                            <p>Returns a list of featured products.</p>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#featured-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="featured-products-url">GET /api/user/products/featured</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#featured-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="featured-products-response" class="json-response"><code class="">{
+  "success": true,
+  "data": [
+    {
+      "_id": "67cb30fe5a47c5f25c335e56",
+      "name": "vjbvbfdjvbh",
+      "slug": "vjbvbfdjvbh",
+      "baseQuantity": "88",
+      "quantityUnit": "kg",
+      "price": 77,
+      "salePrice": 43.99,
+      "discountPercentage": 43,
+      "stock": 6766,
+      "stockStatus": "in stock",
+      "primaryCategory": {
+        "_id": "67c47d5bc642868df2cf7a51",
+        "name": "Rooted",
+        "slug": "root"
+      },
+      "onSale": true,
+      "images": [
+        "https://res.cloudinary.com/dimqgbm0q/image/upload/v1741369550/product-images/a5dnrjrzjuwrshcelvss.jpg"
+      ]
+    },
+    // More featured products...
+  ]
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- More endpoints... -->
+                    
+                    <!-- On Sale Products -->
+                    <div class="endpoint-card" id="on-sale-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#on-sale-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/on-sale</div>
+                            <div class="endpoint-description">Get products on sale</div>
+                        </div>
+                        <div class="endpoint-body" id="on-sale-products-body">
+                            <p>Returns a list of products that are currently on sale.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#on-sale-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="on-sale-products-url">GET /api/products/on-sale?limit=4</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#on-sale-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="on-sale-products-response">{
+  "success": true,
+  "data": [
+    {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "stock": 100,
+      "stockStatus": "in stock",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      }
+    },
+    // More on-sale products...
+  ]
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Seasonal Products -->
+                    <div class="endpoint-card" id="seasonal-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#seasonal-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/seasonal</div>
+                            <div class="endpoint-description">Get seasonal products</div>
+                        </div>
+                        <div class="endpoint-body" id="seasonal-products-body">
+                            <p>Returns a list of seasonal products.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#seasonal-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="seasonal-products-url">GET /api/products/seasonal?limit=4</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#seasonal-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="seasonal-products-response">{
+  "success": true,
+  "data": [
+    {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "stock": 100,
+      "stockStatus": "in stock",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "onSale": true,
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      }
+    },
+    // More seasonal products...
+  ]
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Products by Stock Status -->
+                    <div class="endpoint-card" id="stock-status">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#stock-status-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/stock-status/{status}</div>
+                            <div class="endpoint-description">Get products by stock status</div>
+                        </div>
+                        <div class="endpoint-body" id="stock-status-body">
+                            <p>Returns a paginated list of products with the specified stock status.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">status</td>
+                                            <td class="param-type">string</td>
+                                            <td>Stock status (in-stock, out-of-stock, low-stock)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">page</td>
+                                            <td class="param-type">number</td>
+                                            <td>Page number (default: 1)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Items per page (default: 10)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#stock-status-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="stock-status-url">GET /api/products/stock-status/in-stock?page=1&limit=10</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#stock-status-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="stock-status-response">{
+  "success": true,
+  "data": {
+    "products": [
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Organic Apples",
+        "slug": "organic-apples",
+        "price": 2.99,
+        "salePrice": 2.49,
+        "discountPercentage": 17,
+        "images": ["apple1.jpg", "apple2.jpg"],
+        "stock": 100,
+        "stockStatus": "in stock",
+        "baseQuantity": "1",
+        "quantityUnit": "kg",
+        "onSale": true,
+        "primaryCategory": {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      },
+      // More products...
+    ],
+    "pagination": {
+      "total": 35,
+      "page": 1,
+      "limit": 10,
+      "pages": 4
+    }
+  }
+}</pre>
+                            </div>
+                            
+                            <div class="code-block response-error">
+                                <div class="code-header">
+                                    <span class="code-title">400 Bad Request</span>
+                                    <button class="copy-btn" data-clipboard-target="#stock-status-error">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="stock-status-error">{
+  "success": false,
+  "error": "Invalid stock status. Must be one of: in-stock, out-of-stock, low-stock"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Related Products -->
+                    <div class="endpoint-card" id="related-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#related-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/{slug}/related</div>
+                            <div class="endpoint-description">Get related products</div>
+                        </div>
+                        <div class="endpoint-body" id="related-products-body">
+                            <p>Returns a list of products related to the specified product.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 4)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#related-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="related-products-url">GET /api/products/organic-apples/related?limit=4</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#related-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="related-products-response">{
+  "success": true,
+  "data": [
+    {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e2",
+      "name": "Organic Bananas",
+      "slug": "organic-bananas",
+      "price": 1.99,
+      "salePrice": 1.49,
+      "discountPercentage": 25,
+      "images": ["banana1.jpg", "banana2.jpg"],
+      "stock": 150,
+      "stockStatus": "in stock",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "onSale": true,
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      }
+    },
+    // More related products...
+  ]
+}</pre>
+                            </div>
+                            
+                            <div class="code-block response-error">
+                                <div class="code-header">
+                                    <span class="code-title">404 Not Found</span>
+                                    <button class="copy-btn" data-clipboard-target="#related-products-error">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="related-products-error">{
+  "success": false,
+  "error": "Product not found"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category Products -->
+                    <div class="endpoint-card" id="category-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#category-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/categories/{slug}/products</div>
+                            <div class="endpoint-description">Get products by category</div>
+                        </div>
+                        <div class="endpoint-body" id="category-products-body">
+                            <p>Returns a paginated list of products in the specified category.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Category slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">page</td>
+                                            <td class="param-type">number</td>
+                                            <td>Page number (default: 1)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Items per page (default: 12)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">sort</td>
+                                            <td class="param-type">string</td>
+                                            <td>Sort order (newest, oldest, price-low, price-high, discount)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">minPrice</td>
+                                            <td class="param-type">number</td>
+                                            <td>Minimum price filter</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">maxPrice</td>
+                                            <td class="param-type">number</td>
+                                            <td>Maximum price filter</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#category-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="category-products-url">GET /api/categories/fruits/products?page=1&limit=12&sort=price-low</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#category-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="category-products-response">{
+  "success": true,
+  "data": {
+    "category": {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Fruits",
+      "slug": "fruits",
+      "description": "Fresh organic fruits"
+    },
+    "products": [
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Organic Apples",
+        "slug": "organic-apples",
+        "price": 2.99,
+        "salePrice": 2.49,
+        "discountPercentage": 17,
+        "images": ["apple1.jpg", "apple2.jpg"],
+        "stock": 100,
+        "stockStatus": "in stock",
+        "baseQuantity": "1",
+        "quantityUnit": "kg",
+        "onSale": true,
+        "primaryCategory": {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      },
+      // More products...
+    ],
+    "pagination": {
+      "total": 25,
+      "page": 1,
+      "limit": 12,
+      "pages": 3
+    }
+  }
+}</pre>
+                            </div>
+                            
+                            <div class="code-block response-error">
+                                <div class="code-header">
+                                    <span class="code-title">404 Not Found</span>
+                                    <button class="copy-btn" data-clipboard-target="#category-products-error">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="category-products-error">{
+  "success": false,
+  "error": "Category not found"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Products -->
+                    <div class="endpoint-card" id="search-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#search-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/search</div>
+                            <div class="endpoint-description">Search products</div>
+                        </div>
+                        <div class="endpoint-body" id="search-products-body">
+                            <p>Returns a paginated list of products matching the search query.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">q</td>
+                                            <td class="param-type">string</td>
+                                            <td>Search query (required)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">page</td>
+                                            <td class="param-type">number</td>
+                                            <td>Page number (default: 1)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Items per page (default: 12)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">category</td>
+                                            <td class="param-type">string</td>
+                                            <td>Filter by category ID</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#search-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="search-products-url">GET /api/products/search?q=organic&page=1&limit=12</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#search-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="search-products-response">{
+  "success": true,
+  "data": {
+    "query": "organic",
+    "products": [
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Organic Apples",
+        "slug": "organic-apples",
+        "price": 2.99,
+        "salePrice": 2.49,
+        "discountPercentage": 17,
+        "images": ["apple1.jpg", "apple2.jpg"],
+        "stock": 100,
+        "stockStatus": "in stock",
+        "baseQuantity": "1",
+        "quantityUnit": "kg",
+        "onSale": true,
+        "primaryCategory": {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      },
+      // More products...
+    ],
+    "pagination": {
+      "total": 18,
+      "page": 1,
+      "limit": 12,
+      "pages": 2
+    }
+  }
+}</pre>
+                            </div>
+                            
+                            <div class="code-block response-error">
+                                <div class="code-header">
+                                    <span class="code-title">400 Bad Request</span>
+                                    <button class="copy-btn" data-clipboard-target="#search-products-error">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="search-products-error">{
+  "success": false,
+  "error": "Search query is required"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Filters -->
+                    <div class="endpoint-card" id="product-filters">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#product-filters-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/filters</div>
+                            <div class="endpoint-description">Get product filters</div>
+                        </div>
+                        <div class="endpoint-body" id="product-filters-body">
+                            <p>Returns available filters for products, including price range, categories, and more.</p>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#product-filters-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="product-filters-url">GET /api/products/filters</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#product-filters-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="product-filters-response">{
+  "success": true,
+  "data": {
+    "priceRange": {
+      "min": 0.99,
+      "max": 99.99
+    },
+    "categories": [
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits",
+        "productCount": 25
+      },
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e2",
+        "name": "Vegetables",
+        "slug": "vegetables",
+        "productCount": 30
+      },
+      // More categories...
+    ],
+    "quantityUnits": ["g", "kg", "ml", "l", "pcs"],
+    "stockStatuses": ["in stock", "low stock", "out of stock"]
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Recommendations -->
+                    <div class="endpoint-card" id="recommendations">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#recommendations-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/recommendations</div>
+                            <div class="endpoint-description">Get product recommendations</div>
+                        </div>
+                        <div class="endpoint-body" id="recommendations-body">
+                            <p>Returns personalized product recommendations for the current user, or popular products for non-logged in users.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#recommendations-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="recommendations-url">GET /api/products/recommendations?limit=4</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#recommendations-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="recommendations-response">{
+  "success": true,
+  "data": [
+    {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "stock": 100,
+      "stockStatus": "in stock",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "onSale": true,
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      }
+    },
+    // More recommended products...
+  ]
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Admin Endpoints -->
+                <div class="api-section" id="admin-products-list">
+                    <h2>Admin Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#admin-products-list-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/admin/products</div>
+                            <div class="endpoint-description">List all products (admin)</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="admin-products-list-body">
+                            <p>Returns a paginated list of products.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-products-list-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="admin-products-list-url">GET /api/admin/products?limit=8</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-products-list-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="admin-products-list-response">{
+  "success": true,
+  "data": {
+    "products": [
+      {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Organic Apples",
+        "slug": "organic-apples",
+        "price": 2.99,
+        "salePrice": 2.49,
+        "discountPercentage": 17,
+        "images": ["apple1.jpg", "apple2.jpg"],
+        "stock": 100,
+        "stockStatus": "in stock",
+        "baseQuantity": "1",
+        "quantityUnit": "kg",
+        "onSale": true,
+        "primaryCategory": {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      },
+      // More products...
+    ],
+    "pagination": {
+      "total": 50,
+      "page": 1,
+      "limit": 8,
+      "pages": 7
+    }
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="admin-product-detail">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#admin-product-detail-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}</div>
+                            <div class="endpoint-description">Get product details (admin)</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="admin-product-detail-body">
+                            <p>Returns detailed information about a specific product.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-product-detail-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="admin-product-detail-url">GET /api/admin/products/organic-apples</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#admin-product-detail-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="admin-product-detail-response">{
+  "success": true,
+  "data": {
+    "product": {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "stock": 100,
+      "stockUnit": "kg",
+      "stockStatus": "in stock",
+      "categories": [
+        {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      ],
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      },
+      "description": "Fresh organic apples from local farms.",
+      "shortDescription": "Fresh organic apples",
+      "onSale": true,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "additionalInfo": {
+        "origin": "Local Farms",
+        "organic": "Yes",
+        "storage": "Keep refrigerated"
+      },
+      "seasonal": true,
+      "featured": true,
+      "publishStatus": "published",
+      "publishDate": "2023-01-15T00:00:00.000Z",
+      "createdAt": "2023-01-10T00:00:00.000Z",
+      "updatedAt": "2023-01-15T00:00:00.000Z"
+    },
+    "relatedProducts": [
+      // Related products...
+    ]
+  }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="create-product">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#create-product-body">
+                            <div class="method method-post">POST</div>
+                            <div class="endpoint-path">/api/admin/products</div>
+                            <div class="endpoint-description">Create a new product</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="create-product-body">
+                            <p>Creates a new product.</p>
+                            
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#create-product-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="create-product-body">{
+  "name": "Organic Apples",
+  "slug": "organic-apples",
+  "price": 2.99,
+  "salePrice": 2.49,
+  "discountPercentage": 17,
+  "stock": 100,
+  "stockStatus": "in stock",
+  "baseQuantity": "1",
+  "quantityUnit": "kg",
+  "onSale": true,
+  "primaryCategory": {
+    "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+    "name": "Fruits",
+    "slug": "fruits"
+  },
+  "images": ["apple1.jpg", "apple2.jpg"],
+  "description": "Fresh organic apples from local farms.",
+  "shortDescription": "Fresh organic apples",
+  "additionalInfo": {
+    "origin": "Local Farms",
+    "organic": "Yes",
+    "storage": "Keep refrigerated"
+  },
+  "seasonal": true,
+  "featured": true,
+  "publishStatus": "published",
+  "publishDate": "2023-01-15T00:00:00.000Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="update-product">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#update-product-body">
+                            <div class="method method-put">PUT</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}</div>
+                            <div class="endpoint-description">Update product details</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="update-product-body">
+                            <p>Updates the details of an existing product.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#update-product-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="update-product-body">{
+  "name": "Organic Apples",
+  "slug": "organic-apples",
+  "price": 2.99,
+  "salePrice": 2.49,
+  "discountPercentage": 17,
+  "stock": 100,
+  "stockStatus": "in stock",
+  "baseQuantity": "1",
+  "quantityUnit": "kg",
+  "onSale": true,
+  "primaryCategory": {
+    "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+    "name": "Fruits",
+    "slug": "fruits"
+  },
+  "images": ["apple1.jpg", "apple2.jpg"],
+  "description": "Fresh organic apples from local farms.",
+  "shortDescription": "Fresh organic apples",
+  "additionalInfo": {
+    "origin": "Local Farms",
+    "organic": "Yes",
+    "storage": "Keep refrigerated"
+  },
+  "seasonal": true,
+  "featured": true,
+  "publishStatus": "published",
+  "publishDate": "2023-01-15T00:00:00.000Z"
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="delete-product">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#delete-product-body">
+                            <div class="method method-delete">DELETE</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}</div>
+                            <div class="endpoint-description">Delete a product</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="delete-product-body">
+                            <p>Deletes an existing product.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="bulk-operations">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#bulk-operations-body">
+                            <div class="method method-post">POST</div>
+                            <div class="endpoint-path">/api/admin/products/bulk</div>
+                            <div class="endpoint-description">Perform bulk operations on products</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="bulk-operations-body">
+                            <p>Performs bulk operations on multiple products.</p>
+                            
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#bulk-operations-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="bulk-operations-body">{
+  "operations": [
+    {
+      "operation": "update",
+      "productId": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "updates": {
+        "price": 3.99
+      }
+    },
+    {
+      "operation": "delete",
+      "productId": "64a1b2c3d4e5f6a7b8c9d0e2"
+    }
+  ]
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="product-stats">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#product-stats-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/admin/products/stats</div>
+                            <div class="endpoint-description">Get product statistics</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="product-stats-body">
+                            <p>Returns statistics about products.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">startDate</td>
+                                            <td class="param-type">string</td>
+                                            <td>Start date for the statistics (format: YYYY-MM-DD)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">endDate</td>
+                                            <td class="param-type">string</td>
+                                            <td>End date for the statistics (format: YYYY-MM-DD)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card" id="update-stock">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#update-stock-body">
+                            <div class="method method-put">PUT</div>
+                            <div class="endpoint-path">/api/admin/products/{slug}/stock</div>
+                            <div class="endpoint-description">Update product stock</div>
+                            <span class="badge badge-auth">Admin</span>
+                        </div>
+                        <div class="endpoint-body" id="update-stock-body">
+                            <p>Updates the stock of an existing product.</p>
+                            
+                            <h5 class="mt-4">Path Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">slug</td>
+                                            <td class="param-type">string</td>
+                                            <td>Product slug</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Request Body</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request Body</span>
+                                    <button class="copy-btn" data-clipboard-target="#update-stock-body">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="update-stock-body">{
+  "stock": 150
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Endpoints -->
+                <div class="api-section" id="recently-viewed">
+                    <h2>User Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#recently-viewed-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/recently-viewed</div>
+                            <div class="endpoint-description">Get recently viewed products</div>
+                            <span class="badge badge-auth">User</span>
+                        </div>
+                        <div class="endpoint-body" id="recently-viewed-body">
+                            <p>Returns a list of products that the user has recently viewed.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#recently-viewed-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="recently-viewed-url">GET /api/products/recently-viewed?limit=4</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#recently-viewed-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="recently-viewed-response">{
+  "success": true,
+  "data": [
+    {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "stock": 100,
+      "stockStatus": "in stock",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "onSale": true,
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      },
+      "viewedAt": "2023-06-15T10:30:00.000Z"
+    },
+    // More recently viewed products...
+  ]
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Clipboard.js for Copy Functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Clipboard.js
+            var clipboard = new ClipboardJS('.copy-btn');
+            
+            clipboard.on('success', function(e) {
+                const originalText = e.trigger.innerHTML;
+                e.trigger.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(function() {
+                    e.trigger.innerHTML = originalText;
+                }, 2000);
+                e.clearSelection();
+            });
+            
+            // Initialize Bootstrap collapse components
+            const endpointHeaders = document.querySelectorAll('.endpoint-header');
+            endpointHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-bs-target');
+                    const targetBody = document.querySelector(targetId);
+                    
+                    // Create a new Bootstrap Collapse instance and toggle it
+                    const bsCollapse = new bootstrap.Collapse(targetBody, {
+                        toggle: true
+                    });
+                });
+            });
+            
+            // Back to top button
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Active link highlighting in sidebar
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            const sections = document.querySelectorAll('.api-section, .intro-section');
+            
+            function setActiveLink() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.pageYOffset >= sectionTop - 100) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink();
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- Product Form Modal -->
+    <div class="modal fade" id="productFormModal" tabindex="-1" aria-labelledby="productFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productFormModalLabel">Create New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name*</label>
+                                <input type="text" class="form-control" id="name" name="name" required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="slug" class="form-label">Slug*</label>
+                                <input type="text" class="form-control" id="slug" name="slug" required>
+                                <small class="text-muted">Will be auto-generated if left empty</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="baseQuantity" class="form-label">Base Quantity*</label>
+                                <input type="text" class="form-control" id="baseQuantity" name="baseQuantity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="quantityUnit" class="form-label">Quantity Unit*</label>
+                                <select class="form-select" id="quantityUnit" name="quantityUnit" required>
+                                    <option value="">Select unit</option>
+                                    <option value="g">Grams (g)</option>
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="ml">Milliliters (ml)</option>
+                                    <option value="l">Liters (l)</option>
+                                    <option value="pcs">Pieces (pcs)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="stockUnit" class="form-label">Stock Unit*</label>
+                                <select class="form-select" id="stockUnit" name="stockUnit" required>
+                                    <option value="">Select unit</option>
+                                    <option value="g">Grams (g)</option>
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="ml">Milliliters (ml)</option>
+                                    <option value="l">Liters (l)</option>
+                                    <option value="pcs">Pieces (pcs)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="price" class="form-label">Price*</label>
+                                <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="salePrice" class="form-label">Sale Price</label>
+                                <input type="number" class="form-control" id="salePrice" name="salePrice" min="0" step="0.01">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="discountPercentage" class="form-label">Discount %</label>
+                                <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" min="0" max="100">
+                                <small class="text-muted">Auto-calculated if left empty</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="stock" class="form-label">Stock*</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="stockStatus" class="form-label">Stock Status*</label>
+                                <select class="form-select" id="stockStatus" name="stockStatus" required>
+                                    <option value="">Select status</option>
+                                    <option value="in stock">In Stock</option>
+                                    <option value="low stock">Low Stock</option>
+                                    <option value="out of stock">Out of Stock</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="primaryCategory" class="form-label">Primary Category*</label>
+                            <select class="form-select" id="primaryCategory" name="primaryCategory" required>
+                                <option value="">Select category</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e1">Fruits</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e2">Vegetables</option>
+                                <option value="uncategorized">Uncategorized</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="categories" class="form-label">Additional Categories</label>
+                            <select class="form-select" id="categories" name="categories" multiple>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e1">Fruits</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e2">Vegetables</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e3">Organic</option>
+                                <option value="64a1b2c3d4e5f6a7b8c9d0e4">Local</option>
+                            </select>
+                            <small class="text-muted">Hold Ctrl/Cmd to select multiple</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description*</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="shortDescription" class="form-label">Short Description</label>
+                            <textarea class="form-control" id="shortDescription" name="shortDescription" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="onSale" name="onSale">
+                                    <label class="form-check-label" for="onSale">On Sale</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="seasonal" name="seasonal">
+                                    <label class="form-check-label" for="seasonal">Seasonal</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="featured" name="featured">
+                                    <label class="form-check-label" for="featured">Featured</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="images" class="form-label">Images</label>
+                            <input type="file" class="form-control" id="images" name="images" multiple accept="image/*">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Additional Information</label>
+                            <div id="additionalInfoContainer">
+                                <div class="row mb-2 additional-info-row">
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="additionalInfoKey[]" placeholder="Key (e.g. Origin)">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="additionalInfoValue[]" placeholder="Value (e.g. Local Farms)">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-info">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="addInfoBtn">Add More Info</button>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="publishStatus" class="form-label">Publish Status</label>
+                            <select class="form-select" id="publishStatus" name="publishStatus">
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="publishDate" class="form-label">Publish Date</label>
+                            <input type="datetime-local" class="form-control" id="publishDate" name="publishDate">
+                            <small class="text-muted">Auto-set when published if left empty</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitProduct">Create Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Response Modal -->
+    <div class="modal fade" id="apiResponseModal" tabindex="-1" aria-labelledby="apiResponseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="apiResponseModalLabel">API Response</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="code-block response-success">
+                        <div class="code-header">
+                            <span class="code-title">201 Created</span>
+                            <button class="copy-btn" data-clipboard-target="#create-product-response">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+<pre id="create-product-response">{
+  "success": true,
+  "data": {
+    "product": {
+      "_id": "64a1b2c3d4e5f6a7b8c9d0e5",
+      "name": "Organic Apples",
+      "slug": "organic-apples",
+      "baseQuantity": "1",
+      "quantityUnit": "kg",
+      "price": 2.99,
+      "salePrice": 2.49,
+      "discountPercentage": 17,
+      "stock": 100,
+      "stockUnit": "kg",
+      "stockStatus": "in stock",
+      "categories": [
+        {
+          "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+          "name": "Fruits",
+          "slug": "fruits"
+        }
+      ],
+      "primaryCategory": {
+        "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "Fruits",
+        "slug": "fruits"
+      },
+      "description": "Fresh organic apples from local farms.",
+      "shortDescription": "Fresh organic apples",
+      "onSale": true,
+      "images": ["apple1.jpg", "apple2.jpg"],
+      "additionalInfo": {
+        "origin": "Local Farms",
+        "organic": "Yes",
+        "storage": "Keep refrigerated"
+      },
+      "seasonal": true,
+      "featured": true,
+      "publishStatus": "published",
+      "publishDate": "2023-01-15T00:00:00.000Z",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "updatedAt": "2023-01-15T00:00:00.000Z"
+    }
+  }
+}</pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add this script to handle the form functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add a "Try It" button to the create product endpoint
+            const createProductCard = document.getElementById('create-product');
+            if (createProductCard) {
+                const header = createProductCard.querySelector('.endpoint-header');
+                const tryItBtn = document.createElement('button');
+                tryItBtn.className = 'btn btn-sm btn-primary ms-2';
+                tryItBtn.textContent = 'Try It';
+                tryItBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const productFormModal = new bootstrap.Modal(document.getElementById('productFormModal'));
+                    productFormModal.show();
+                });
+                header.appendChild(tryItBtn);
+            }
+            
+            // Handle additional info fields
+            const addInfoBtn = document.getElementById('addInfoBtn');
+            const additionalInfoContainer = document.getElementById('additionalInfoContainer');
+            
+            addInfoBtn.addEventListener('click', function() {
+                const newRow = document.createElement('div');
+                newRow.className = 'row mb-2 additional-info-row';
+                newRow.innerHTML = `
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="additionalInfoKey[]" placeholder="Key (e.g. Origin)">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="additionalInfoValue[]" placeholder="Value (e.g. Local Farms)">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-info">Remove</button>
+                    </div>
+                `;
+                additionalInfoContainer.appendChild(newRow);
+            });
+            
+            // Event delegation for remove buttons
+            additionalInfoContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-info')) {
+                    e.target.closest('.additional-info-row').remove();
+                }
+            });
+            
+            // Handle form submission
+            const submitProductBtn = document.getElementById('submitProduct');
+            submitProductBtn.addEventListener('click', function() {
+                // In a real app, you would collect form data and send it to the API
+                // For this demo, we'll just show the success response
+                const apiResponseModal = new bootstrap.Modal(document.getElementById('apiResponseModal'));
+                apiResponseModal.show();
+            });
+            
+            // Auto-generate slug from name
+            const nameInput = document.getElementById('name');
+            const slugInput = document.getElementById('slug');
+            
+            nameInput.addEventListener('input', function() {
+                if (!slugInput.value) {
+                    slugInput.value = nameInput.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '');
+                }
+            });
+            
+            // Auto-calculate discount percentage
+            const priceInput = document.getElementById('price');
+            const salePriceInput = document.getElementById('salePrice');
+            const discountInput = document.getElementById('discountPercentage');
+            
+            function updateDiscount() {
+                const price = parseFloat(priceInput.value);
+                const salePrice = parseFloat(salePriceInput.value);
+                
+                if (price && salePrice && price > salePrice) {
+                    const discount = Math.round(((price - salePrice) / price) * 100);
+                    discountInput.value = discount;
+                } else {
+                    discountInput.value = '';
+                }
+            }
+            
+            priceInput.addEventListener('input', updateDiscount);
+            salePriceInput.addEventListener('input', updateDiscount);
+        });
+    </script>
+</body>
+</html>
