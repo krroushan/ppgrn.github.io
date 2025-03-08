@@ -25,12 +25,14 @@
                         <a class="nav-link" href="#products-list">List Products</a>
                         <a class="nav-link" href="#product-detail">Get Product Detail</a>
                         <a class="nav-link" href="#featured-products">Featured Products</a>
+                        <a class="nav-link" href="#primary-category-products">Primary Category Products</a>
+                        <a class="nav-link" href="#city-products">Products by City</a>
                         <a class="nav-link" href="#on-sale-products">On Sale Products</a>
                         <a class="nav-link" href="#seasonal-products">Seasonal Products</a>
                         <a class="nav-link" href="#stock-status">Products by Stock Status</a>
                         <a class="nav-link" href="#related-products">Related Products</a>
                         <a class="nav-link" href="#category-products">Category Products</a>
-                        <a class="nav-link" href="#search-products">Search Products</a>
+                        <a class="nav-link" href="#search-products">Search Products</a> 
                         <a class="nav-link" href="#product-filters">Product Filters</a>
                         <a class="nav-link" href="#recommendations">Product Recommendations</a>
                         
@@ -455,6 +457,276 @@
                     </div>
                     
                     <!-- More endpoints... -->
+                    <div class="endpoint-card" id="primary-category-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#primary-category-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products?primaryCategory=categoryId</div>
+                            <div class="endpoint-description">Get products by primary category</div>
+                        </div>
+                        <div class="endpoint-body" id="primary-category-products-body">
+                            <p>Returns a list of products that belong to a specific primary category.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#primary-category-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="primary-category-products-url">GET /api/products?primaryCategory=categoryId</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#primary-category-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="primary-category-products-response">{
+    "success": true,
+    "data": {
+        "products": [
+            {
+                "_id": "67cb37235a47c5f25c335e6f",
+                "name": "bhjbjdbvfhd",
+                "slug": "bhjbjdbvfhd",
+                "baseQuantity": "55",
+                "quantityUnit": "g",
+                "price": 54.98,
+                "salePrice": 44.97,
+                "discountPercentage": 18,
+                "sku": "NJV-BHJBJ-9136",
+                "stock": 44,
+                "stockUnit": "kg",
+                "stockStatus": "in stock",
+                "categories": [
+                    {
+                        "_id": "67c47d5bc642868df2cf7a51",
+                        "name": "Rooted",
+                        "slug": "root"
+                    }
+                ],
+                "primaryCategory": {
+                    "_id": "67cb12fe776d1d1ec3474520",
+                    "name": "njvjbj gh",
+                    "slug": "njvjbj-gh"
+                },
+                "description": "vbhbvhbfd",
+                "shortDescription": "jhbvbfjbh",
+                "onSale": true,
+                "images": [
+                    "https://res.cloudinary.com/dimqgbm0q/image/upload/v1741371085/product-images/sugdjvtnisgiiciuggva.png"
+                ],
+                "additionalInfo": {
+                    "bhbvjbjdf": "bjhfbvbhf",
+                    "bbhjbf": "vbvhfhfd"
+                },
+                "seasonal": false,
+                "featured": false,
+                "publishStatus": "published",
+                "publishDate": "2025-03-07T18:12:51.112Z",
+                "publishedBy": "67c44776ff593c26f1a9ca4b",
+                "createdAt": "2025-03-07T18:12:51.112Z",
+                "updatedAt": "2025-03-07T18:12:51.117Z",
+                "availability": [
+                    {
+                        "state": "Bihar",
+                        "cities": [
+                            "Patna",
+                            "Hajipur"
+                        ],
+                        "stock": 100,
+                        "price": 45,
+                        "salePrice": 5,
+                        "_id": "67cb37235a47c5f25c335e70"
+                    },
+                    {
+                        "state": "Maharashtra",
+                        "cities": [
+                            "Mumbai"
+                        ],
+                        "stock": 55,
+                        "price": 77,
+                        "salePrice": 55,
+                        "_id": "67cb37235a47c5f25c335e71"
+                    }
+                ],
+                "isNationwide": false,
+                "__v": 0
+            },
+            
+            // More products...
+        ],
+        "pagination": {
+            "total": 5,
+            "page": 1,
+            "limit": 12,
+            "pages": 1
+        }
+    }
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products by City -->
+                    <div class="endpoint-card" id="city-products">
+                        <div class="endpoint-header" data-bs-toggle="collapse" data-bs-target="#city-products-body">
+                            <div class="method method-get">GET</div>
+                            <div class="endpoint-path">/api/products/city/{city}</div>
+                            <div class="endpoint-description">Get products by city</div>
+                        </div>
+                        <div class="endpoint-body" id="city-products-body">
+                            <p>Returns a list of products that are available in the specified city.</p>
+                            
+                            <h5 class="mt-4">Query Parameters</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm param-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td class="param-type">number</td>
+                                            <td>Number of products to return (default: 8)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Request</h5>
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span class="code-title">Request URL</span>
+                                    <button class="copy-btn" data-clipboard-target="#city-products-url">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="city-products-url">GET /api/products?city=Mumbai</pre>
+                            </div>
+                            
+                            <h5 class="mt-4">Example Response</h5>
+                            <div class="code-block response-success">
+                                <div class="code-header">
+                                    <span class="code-title">200 Success</span>
+                                    <button class="copy-btn" data-clipboard-target="#city-products-response">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+<pre id="city-products-response">
+    {
+        "success": true,
+        "data": {
+            "products": [
+                {
+                    "_id": "67cb37235a47c5f25c335e6f",
+                    "name": "bhjbjdbvfhd",
+                    "slug": "bhjbjdbvfhd",
+                    "baseQuantity": "55",
+                    "quantityUnit": "g",
+                    "price": 54.98,
+                    "salePrice": 44.97,
+                    "discountPercentage": 18,
+                    "sku": "NJV-BHJBJ-9136",
+                    "stock": 44,
+                    "stockUnit": "kg",
+                    "stockStatus": "in stock",
+                    "categories": [
+                        {
+                            "_id": "67c47d5bc642868df2cf7a51",
+                            "name": "Rooted",
+                            "slug": "root"
+                        }
+                    ],
+                    "primaryCategory": {
+                        "_id": "67cb12fe776d1d1ec3474520",
+                        "name": "njvjbj gh",
+                        "slug": "njvjbj-gh"
+                    },
+                    "description": "vbhbvhbfd",
+                    "shortDescription": "jhbvbfjbh",
+                    "onSale": true,
+                    "images": [
+                        "https://res.cloudinary.com/dimqgbm0q/image/upload/v1741371085/product-images/sugdjvtnisgiiciuggva.png"
+                    ],
+                    "additionalInfo": {
+                        "bhbvjbjdf": "bjhfbvbhf",
+                        "bbhjbf": "vbvhfhfd"
+                    },
+                    "seasonal": false,
+                    "featured": false,
+                    "publishStatus": "published",
+                    "publishDate": "2025-03-07T18:12:51.112Z",
+                    "publishedBy": "67c44776ff593c26f1a9ca4b",
+                    "createdAt": "2025-03-07T18:12:51.112Z",
+                    "updatedAt": "2025-03-07T18:12:51.117Z",
+                    "availability": [
+                        {
+                            "state": "Bihar",
+                            "cities": [
+                                "Patna",
+                                "Hajipur"
+                            ],
+                            "stock": 100,
+                            "price": 45,
+                            "salePrice": 5,
+                            "_id": "67cb37235a47c5f25c335e70"
+                        },
+                        {
+                            "state": "Maharashtra",
+                            "cities": [
+                                "Mumbai"
+                            ],
+                            "stock": 55,
+                            "price": 77,
+                            "salePrice": 55,
+                            "_id": "67cb37235a47c5f25c335e71"
+                        }
+                    ],
+                    "isNationwide": false,
+                    "__v": 0
+                }
+            ],
+            "pagination": {
+                "total": 1,
+                "page": 1,
+                "limit": 12,
+                "pages": 1
+            }
+        }
+    }
+</pre>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- On Sale Products -->
                     <div class="endpoint-card" id="on-sale-products">
