@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .endpoint {
+            background-color: #e9f7fe;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 20px 0;
+        }
+        .method {
+            font-weight: bold;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .get {
+            background-color: #61affe;
+        }
+        .post {
+            background-color: #49cc90;
+        }
+        .put {
+            background-color: #fca130;
+        }
+        .delete {
+            background-color: #f93e3e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .response-success {
+            border-left: 4px solid #49cc90;
+        }
+        .response-error {
+            border-left: 4px solid #f93e3e;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cart API Documentation</h1>
+    <p>This documentation provides details about the Cart API endpoints, including request and response formats.</p>
+
+    <div class="endpoint">
+        <h2><span class="method get">GET</span> /api/user/carts</h2>
+        <p>Retrieves the current user's cart with all items and details.</p>
+
+        <h3>Request</h3>
+        <pre><code>GET /api/user/carts
+Authorization: Bearer {token}</code></pre>
+
+        <h3>Response</h3>
+        <div class="response-success">
+            <h4>Success (200 OK)</h4>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "_id": "cart_id",
+    "user": "user_id",
+    "items": [
+      {
+        "product": {
+          "_id": "product_id",
+          "name": "Product Name",
+          "price": 45.00,
+          "salePrice": 39.99,
+          "onSale": true,
+          "images": ["image_url"],
+          "baseQuantity": 500,
+          "quantityUnit": "g",
+          "stock": 100,
+          "stockStatus": "in stock"
+        },
+        "quantity": 2,
+        "_id": "item_id"
+      }
+    ],
+    "totalQuantity": 2,
+    "totalPrice": 79.98
+  }
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (401 Unauthorized)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Authentication required"
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (500 Internal Server Error)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Failed to fetch cart"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2><span class="method post">POST</span> /api/user/carts</h2>
+        <p>Adds a product to the user's cart.</p>
+
+        <h3>Request</h3>
+        <pre><code>POST /api/user/carts
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "productId": "product_id",
+  "quantity": 1
+}</code></pre>
+
+        <h3>Request Parameters</h3>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>productId</td>
+                <td>String</td>
+                <td>Yes</td>
+                <td>The ID of the product to add to the cart</td>
+            </tr>
+            <tr>
+                <td>quantity</td>
+                <td>Number</td>
+                <td>No</td>
+                <td>The quantity to add (defaults to 1 if not provided)</td>
+            </tr>
+        </table>
+
+        <h3>Response</h3>
+        <div class="response-success">
+            <h4>Success (200 OK)</h4>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "message": "Item added to cart",
+    "cart": {
+      "_id": "cart_id",
+      "user": "user_id",
+      "items": [
+        {
+          "product": {
+            "_id": "product_id",
+            "name": "Product Name",
+            "price": 45.00,
+            "salePrice": 39.99,
+            "onSale": true,
+            "images": ["image_url"],
+            "baseQuantity": 500,
+            "quantityUnit": "g",
+            "stock": 100,
+            "stockStatus": "in stock"
+          },
+          "quantity": 1,
+          "_id": "item_id"
+        }
+      ],
+      "totalQuantity": 1,
+      "totalPrice": 39.99
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (400 Bad Request)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Product ID is required"
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (400 Bad Request)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Not enough stock available"
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (404 Not Found)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Product not found"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2><span class="method put">PUT</span> /api/user/carts</h2>
+        <p>Updates the quantity of a product in the cart.</p>
+
+        <h3>Request</h3>
+        <pre><code>PUT /api/user/carts
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "productId": "product_id",
+  "quantity": 3
+}</code></pre>
+
+        <h3>Request Parameters</h3>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>productId</td>
+                <td>String</td>
+                <td>Yes</td>
+                <td>The ID of the product to update</td>
+            </tr>
+            <tr>
+                <td>quantity</td>
+                <td>Number</td>
+                <td>Yes</td>
+                <td>The new quantity (set to 0 to remove the item)</td>
+            </tr>
+        </table>
+
+        <h3>Response</h3>
+        <div class="response-success">
+            <h4>Success (200 OK)</h4>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "message": "Cart updated",
+    "cart": {
+      "_id": "cart_id",
+      "user": "user_id",
+      "items": [
+        {
+          "product": {
+            "_id": "product_id",
+            "name": "Product Name",
+            "price": 45.00,
+            "salePrice": 39.99,
+            "onSale": true,
+            "images": ["image_url"],
+            "baseQuantity": 500,
+            "quantityUnit": "g",
+            "stock": 100,
+            "stockStatus": "in stock"
+          },
+          "quantity": 3,
+          "_id": "item_id"
+        }
+      ],
+      "totalQuantity": 3,
+      "totalPrice": 119.97
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (400 Bad Request)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Product ID is required"
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (400 Bad Request)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Not enough stock available"
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (404 Not Found)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Item not found in cart"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2><span class="method delete">DELETE</span> /api/user/carts</h2>
+        <p>Clears the entire cart.</p>
+
+        <h3>Request</h3>
+        <pre><code>DELETE /api/user/carts
+Authorization: Bearer {token}</code></pre>
+
+        <h3>Response</h3>
+        <div class="response-success">
+            <h4>Success (200 OK)</h4>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "message": "Cart cleared",
+    "cart": {
+      "_id": "cart_id",
+      "user": "user_id",
+      "items": [],
+      "totalQuantity": 0,
+      "totalPrice": 0
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (404 Not Found)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Cart not found"
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h2><span class="method delete">DELETE</span> /api/user/carts?productId={productId}</h2>
+        <p>Removes a specific item from the cart.</p>
+
+        <h3>Request</h3>
+        <pre><code>DELETE /api/user/carts?productId=product_id
+Authorization: Bearer {token}</code></pre>
+
+        <h3>Query Parameters</h3>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>productId</td>
+                <td>String</td>
+                <td>Yes</td>
+                <td>The ID of the product to remove from the cart</td>
+            </tr>
+        </table>
+
+        <h3>Response</h3>
+        <div class="response-success">
+            <h4>Success (200 OK)</h4>
+            <pre><code>{
+  "success": true,
+  "data": {
+    "message": "Item removed from cart",
+    "cart": {
+      "_id": "cart_id",
+      "user": "user_id",
+      "items": [],
+      "totalQuantity": 0,
+      "totalPrice": 0
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="response-error">
+            <h4>Error (404 Not Found)</h4>
+            <pre><code>{
+  "success": false,
+  "error": "Item not found in cart"
+}</code></pre>
+        </div>
+    </div>
+
+    <h2>Error Codes</h2>
+    <table>
+        <tr>
+            <th>Status Code</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>OK - The request was successful</td>
+        </tr>
+        <tr>
+            <td>400</td>
+            <td>Bad Request - The request was invalid or cannot be served</td>
+        </tr>
+        <tr>
+            <td>401</td>
+            <td>Unauthorized - Authentication is required</td>
+        </tr>
+        <tr>
+            <td>404</td>
+            <td>Not Found - The resource could not be found</td>
+        </tr>
+        <tr>
+            <td>500</td>
+            <td>Internal Server Error - An error occurred on the server</td>
+        </tr>
+    </table>
+</body>
+</html>
+
